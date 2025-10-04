@@ -1,6 +1,6 @@
 USE app_db;
 CREATE TABLE login_sessions (
-  session_id  INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  session_hash BINARY(32) PRIMARY KEY,
   visitor_id  INT UNSIGNED NOT NULL,
   expires_at  DATETIME NOT NULL,
   CONSTRAINT fk_sessions_visitor

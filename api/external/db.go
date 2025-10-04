@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"net/url"
 	"os"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
 func getenv(key, def string) string {

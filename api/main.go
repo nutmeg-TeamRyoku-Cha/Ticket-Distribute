@@ -25,14 +25,18 @@ func main() {
 
 	//Repository
 	sessionRepo := repository.NewLoginSessionRepository(db)
+	visitorRepo := repository.NewVisitorRepository(db)
 	//Usecase
 	sessionsUC := usecase.NewSessionUsecase(sessionRepo)
+	visitorsUC := usecase.NewVisitorUsecase(visitorRepo)
 	//Handler
 	sessionsH := handler.NewSessionHandler(sessionsUC)
+	visitorsH := handler.NewVisitorHandler(visitorsUC)
 
 	// Start Echo Server
 	e := router.New(router.Deps{
 		SessionHandler: sessionsH,
+		VisitorHandler: visitorsH,
 	})
 	go func() {
 		log.Println("Starting server on :8080")

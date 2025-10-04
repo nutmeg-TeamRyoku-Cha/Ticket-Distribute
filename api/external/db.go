@@ -58,5 +58,6 @@ func OpenDB() (*sql.DB, error) {
 		_ = db.Close()
 		return nil, err
 	}
+	fmt.Println("Ping OK to", dsn)
 	return db, nil
 }

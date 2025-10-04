@@ -15,3 +15,12 @@ func NewSessionToken() (token string, hash []byte, err error) {
 	h := sha256.Sum256(b)
 	return token, h[:], nil
 }
+
+func SessionHashFromToken(token string) ([]byte, error) {
+	raw, err := hex.DecodeString(token)
+	if err != nil {
+		return nil, err
+	}
+	sum := sha256.Sum256(raw)
+	return sum[:], nil
+}

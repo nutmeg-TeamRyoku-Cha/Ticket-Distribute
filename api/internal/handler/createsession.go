@@ -9,12 +9,12 @@ import (
 	"ticket-app/internal/usecase"
 )
 
-type SessionHandler struct {
-	uc usecase.SessionUsecase
+type CreateSessionHandler struct {
+	uc usecase.CreateSessionUsecase
 }
 
-func NewSessionHandler(uc usecase.SessionUsecase) *SessionHandler {
-	return &SessionHandler{uc: uc}
+func NewSessionHandler(uc usecase.CreateSessionUsecase) *CreateSessionHandler {
+	return &CreateSessionHandler{uc: uc}
 }
 
 type createSessionReq struct {
@@ -26,7 +26,7 @@ type createSessionRes struct {
 	ExpiresAt string `json:"expires_at"`
 }
 
-func (h *SessionHandler) CreateSession(c echo.Context) error {
+func (h *CreateSessionHandler) CreateSession(c echo.Context) error {
 	var req createSessionReq
 	if err := c.Bind(&req); err != nil || req.VisitorID == 0 {
 		return echo.NewHTTPError(http.StatusBadRequest, "invalid request")

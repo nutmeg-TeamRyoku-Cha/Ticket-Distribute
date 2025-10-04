@@ -9,7 +9,7 @@ import (
 )
 
 type Deps struct {
-	SessionHandler *handler.SessionHandler
+	SessionHandler *handler.CreateSessionHandler
 }
 
 func New(d Deps) *echo.Echo {

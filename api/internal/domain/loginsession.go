@@ -20,6 +20,7 @@ type TokenAndSession struct {
 
 type SessionRepository interface {
 	Create(ctx context.Context, s LoginSession) error
+	ResolveVisitorByToken(ctx context.Context, token string) (uint64, bool, error)
 }
 
 func IssueSession(visitorID uint64, now time.Time) (TokenAndSession, error) {

@@ -12,6 +12,6 @@ func NewSessionToken() (token string, hash []byte, err error) {
 		return "", nil, err
 	}
 	token = hex.EncodeToString(b)
-	h := sha256.Sum256([]byte(token))
+	h := sha256.Sum256(b)
 	return token, h[:], nil
 }

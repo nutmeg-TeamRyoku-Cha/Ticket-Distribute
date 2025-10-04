@@ -54,3 +54,23 @@ func (r *VisitorRepository) List(ctx context.Context) ([]domain.Visitor, error) 
 	}
 	return out, nil
 }
+
+func (r *VisitorRepository) GetByID(ctx context.Context, id uint64) (domain.Visitor, bool, error) {
+	var vid uint64
+	var nickname string
+	var bd time.Time
+	var ps int
+	err := r.DB.QueryRowContext(ctx, `
+		SELECT visitor_id, nickname, birth_date, party_size
+		FROM visitors
+		WHERE visitor_id = ?
+		LIMIT 1
+	`, id).Scan(&vid, &nickname, &bd, &ps)
+	if err == sql.ErrNoRows {
+		return domain.Visitor{}, false, nil
+	}
+	if err != nil {
+		return domain.Visitor{}, false, err
+	}
+	return domain.Visitor{VisitorID: vid, Nickname: nickname, BirthDate: bd, PartySize: ps}, true, nil
+}

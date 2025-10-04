@@ -18,7 +18,10 @@ func New(d Deps) *echo.Echo {
 
 	e.GET("/healthz", func(c echo.Context) error { return c.NoContent(http.StatusOK) })
 	e.POST("/sessions", d.SessionHandler.CreateSession)
+
+	// Visitor関連のAPI
 	e.GET("/visitors", d.VisitorHandler.ListVisitors)
+	e.GET("/visitors/:id", d.VisitorHandler.GetVisitor)
 	e.POST("/visitors", d.VisitorHandler.CreateVisitor)
 
 	return e

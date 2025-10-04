@@ -9,6 +9,7 @@ import (
 type VisitorUsecase interface {
 	CreateVisitor(ctx context.Context, v domain.Visitor) (uint64, error)
 	ListVisitors(ctx context.Context) ([]domain.Visitor, error)
+	GetVisitorByID(ctx context.Context, id uint64) (domain.Visitor, bool, error)
 }
 
 type visitorUsecase struct {
@@ -28,4 +29,8 @@ func (u *visitorUsecase) CreateVisitor(ctx context.Context, v domain.Visitor) (u
 
 func (u *visitorUsecase) ListVisitors(ctx context.Context) ([]domain.Visitor, error) {
 	return u.repo.List(ctx)
+}
+
+func (u *visitorUsecase) GetVisitorByID(ctx context.Context, id uint64) (domain.Visitor, bool, error) {
+	return u.repo.GetByID(ctx, id)
 }

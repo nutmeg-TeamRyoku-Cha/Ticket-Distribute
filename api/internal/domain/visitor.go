@@ -15,4 +15,5 @@ type Visitor struct {
 type VisitorRepository interface {
 	Create(ctx context.Context, v Visitor) (uint64, error)
 	List(ctx context.Context) ([]Visitor, error)
+	GetByID(ctx context.Context, id uint64) (Visitor, bool, error)
 }

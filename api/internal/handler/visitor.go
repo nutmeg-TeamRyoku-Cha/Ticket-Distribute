@@ -2,6 +2,7 @@ package handler
 
 import (
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/labstack/echo/v4"
@@ -65,4 +66,26 @@ func (h *VisitorHandler) ListVisitors(c echo.Context) error {
 		})
 	}
 	return c.JSON(http.StatusOK, out)
+}
+
+func (h *VisitorHandler) GetVisitor(c echo.Context) error {
+	idStr := c.Param("id")
+	id, err := strconv.ParseUint(idStr, 10, 64)
+	if err != nil || id == 0 {
+		return echo.NewHTTPError(http.StatusBadRequest, "invalid id")
+	}
+	v, ok, err := h.uc.GetVisitorByID(c.Request().Context(), id)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+	}
+	if !ok {
+		return echo.NewHTTPError(http.StatusNotFound, "not found")
+	}
+	res := listVisitorRes{
+		VisitorID: v.VisitorID,
+		Nickname:  v.Nickname,
+		BirthDate: v.BirthDate.Format("2006-01-02"),
+		PartySize: v.PartySize,
+	}
+	return c.JSON(http.StatusOK, res)
 }

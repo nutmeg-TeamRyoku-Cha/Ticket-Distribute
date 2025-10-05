@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"database/sql"
+	"time"
 
 	"ticket-app/internal/auth"
 	"ticket-app/internal/domain"
@@ -10,7 +11,7 @@ import (
 
 type LoginSessionRepository struct{ DB *sql.DB }
 
-func NewLoginSessionRepository(db *sql.DB) *LoginSessionRepository {
+func NewSessionRepository(db *sql.DB) *LoginSessionRepository {
 	return &LoginSessionRepository{DB: db}
 }
 
@@ -25,23 +26,40 @@ func (r *LoginSessionRepository) Create(ctx context.Context, s domain.LoginSessi
 	return err
 }
 
-func (r *LoginSessionRepository) ResolveVisitorByToken(ctx context.Context, token string) (uint64, bool, error) {
+func (r *LoginSessionRepository) VisitorProfByToken(ctx context.Context, token string) (domain.Visitor, error) {
 	h, err := auth.SessionHashFromToken(token)
 	if err != nil {
-		return 0, false, err
+		return domain.Visitor{}, err
 	}
-	var visitorID uint64
+
+	var v domain.Visitor
+	var birth sql.NullTime
+	var party sql.NullInt64
+
 	err = r.DB.QueryRowContext(ctx, `
-        SELECT visitor_id
-        FROM login_sessions
-        WHERE session_hash = ? AND expires_at > UTC_TIMESTAMP(6)
-        LIMIT 1
-    `, h).Scan(&visitorID)
+		SELECT v.visitor_id, v.nickname, v.birth_date, v.party_size
+		FROM login_sessions s
+		JOIN visitors v ON v.visitor_id = s.visitor_id
+		WHERE s.session_hash = ? AND s.expires_at > UTC_TIMESTAMP(6)
+		LIMIT 1
+	`, h).Scan(&v.VisitorID, &v.Nickname, &birth, &party)
 	if err == sql.ErrNoRows {
-		return 0, false, nil
+		return domain.Visitor{}, domain.ErrSessionNotFound
 	}
 	if err != nil {
-		return 0, false, err
+		return domain.Visitor{}, err
 	}
-	return visitorID, true, nil
+
+	if birth.Valid {
+		v.BirthDate = birth.Time
+	} else {
+		v.BirthDate = time.Time{} // ゼロ時刻（必要に応じて意味を決める）
+	}
+	if party.Valid {
+		v.PartySize = int(party.Int64)
+	} else {
+		v.PartySize = 0
+	}
+
+	return v, nil
 }

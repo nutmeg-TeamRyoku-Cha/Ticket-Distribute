@@ -9,6 +9,8 @@ import (
 	"ticket-app/internal/usecase"
 )
 
+const SessionCookieName = "session_token"
+
 type CreateSessionHandler struct {
 	uc usecase.CreateSessionUsecase
 }
@@ -35,6 +37,17 @@ func (h *CreateSessionHandler) CreateSession(c echo.Context) error {
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
+
+	c.SetCookie(&http.Cookie{
+		Name:     SessionCookieName,
+		Value:    ts.Token,
+		Path:     "/",
+		Expires:  ts.LoginSession.ExpiresAt,
+		HttpOnly: true,
+		SameSite: http.SameSiteLaxMode,
+		Secure:   true,
+	})
+
 	return c.JSON(http.StatusCreated, createSessionRes{
 		Token:     ts.Token,
 		ExpiresAt: ts.LoginSession.ExpiresAt.Format(time.RFC3339),

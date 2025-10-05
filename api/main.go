@@ -24,7 +24,7 @@ func main() {
 	defer db.Close()
 
 	//Repository
-	sessionRepo := repository.NewLoginSessionRepository(db)
+	sessionRepo := repository.NewSessionRepository(db)
 	visitorRepo := repository.NewVisitorRepository(db)
 	ticketRepo := repository.NewTicketRepository(db)
 	//Usecase

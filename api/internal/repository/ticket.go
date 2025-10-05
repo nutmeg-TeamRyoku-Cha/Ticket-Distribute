@@ -27,6 +27,42 @@ func (r *TicketRepository) Create(ctx context.Context, t domain.Ticket) (uint64,
 	return uint64(id), nil
 }
 
+func (r *TicketRepository) ListAll(ctx context.Context) ([]domain.Ticket, error) {
+	rows, err := r.DB.QueryContext(ctx, `
+        SELECT ticket_id, visitor_id, project_id, status, entry_start_time, entry_end_time
+        FROM tickets
+        ORDER BY ticket_id DESC
+    `)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var out []domain.Ticket
+	for rows.Next() {
+		var id, vid, pid uint64
+		var status string
+		var est, eet sql.NullTime
+		if err := rows.Scan(&id, &vid, &pid, &status, &est, &eet); err != nil {
+			return nil, err
+		}
+		var estp, eetp *time.Time
+		if est.Valid {
+			tmp := est.Time
+			estp = &tmp
+		}
+		if eet.Valid {
+			tmp := eet.Time
+			eetp = &tmp
+		}
+		out = append(out, domain.Ticket{TicketID: id, VisitorID: vid, ProjectID: pid, Status: status, EntryStartTime: estp, EntryEndTime: eetp})
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (r *TicketRepository) ListByVisitor(ctx context.Context, visitorID uint64) ([]domain.Ticket, error) {
 	rows, err := r.DB.QueryContext(ctx, `
         SELECT ticket_id, visitor_id, project_id, status, entry_start_time, entry_end_time

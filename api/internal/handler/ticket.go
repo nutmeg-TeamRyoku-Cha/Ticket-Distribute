@@ -74,15 +74,7 @@ func ticketsToRes(ts []domain.Ticket) []ticketRes {
 
 // ListTickets handles GET /tickets?visitor_id=1
 func (h *TicketHandler) ListTickets(c echo.Context) error {
-	vidStr := c.QueryParam("visitor_id")
-	if vidStr == "" {
-		return echo.NewHTTPError(http.StatusBadRequest, "visitor_id required")
-	}
-	vid, err := strconv.ParseUint(vidStr, 10, 64)
-	if err != nil || vid == 0 {
-		return echo.NewHTTPError(http.StatusBadRequest, "invalid visitor_id")
-	}
-	ts, err := h.uc.ListTicketsByVisitor(c.Request().Context(), vid)
+	ts, err := h.uc.ListAllTickets(c.Request().Context())
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}

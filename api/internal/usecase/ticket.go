@@ -10,6 +10,7 @@ type TicketUsecase interface {
 	CreateTicket(ctx context.Context, t domain.Ticket) (uint64, error)
 	ListTicketsByVisitor(ctx context.Context, visitorID uint64) ([]domain.Ticket, error)
 	GetTicketByID(ctx context.Context, id uint64) (domain.Ticket, bool, error)
+	ListAllTickets(ctx context.Context) ([]domain.Ticket, error)
 }
 
 type ticketUsecase struct {
@@ -31,4 +32,8 @@ func (u *ticketUsecase) ListTicketsByVisitor(ctx context.Context, visitorID uint
 
 func (u *ticketUsecase) GetTicketByID(ctx context.Context, id uint64) (domain.Ticket, bool, error) {
 	return u.repo.GetByID(ctx, id)
+}
+
+func (u *ticketUsecase) ListAllTickets(ctx context.Context) ([]domain.Ticket, error) {
+	return u.repo.ListAll(ctx)
 }

@@ -18,8 +18,10 @@ type TicketHandler struct {
 func NewTicketHandler(uc usecase.TicketUsecase) *TicketHandler { return &TicketHandler{uc: uc} }
 
 type createTicketReq struct {
-	VisitorID uint64 `json:"visitor_id"`
-	ProjectID uint64 `json:"project_id"`
+	VisitorID      uint64  `json:"visitor_id"`
+	ProjectID      uint64  `json:"project_id"`
+	EntryStartTime *string `json:"entry_start_time,omitempty"`
+	EntryEndTime   *string `json:"entry_end_time,omitempty"`
 }
 
 type createTicketRes struct {
@@ -44,7 +46,31 @@ func (h *TicketHandler) CreateTicket(c echo.Context) error {
 	if err := c.Bind(&req); err != nil || req.VisitorID == 0 || req.ProjectID == 0 {
 		return echo.NewHTTPError(http.StatusBadRequest, "invalid request")
 	}
-	t := domain.Ticket{VisitorID: req.VisitorID, ProjectID: req.ProjectID, Status: "issued"}
+
+	// 時間文字列(RFC3339形式)を time.Time 型に変換する
+	var est, eet *time.Time
+	if req.EntryStartTime != nil {
+		t, err := time.Parse(time.RFC3339, *req.EntryStartTime)
+		if err != nil {
+			return echo.NewHTTPError(http.StatusBadRequest, "invalid entry_start_time format")
+		}
+		est = &t
+	}
+	if req.EntryEndTime != nil {
+		t, err := time.Parse(time.RFC3339, *req.EntryEndTime)
+		if err != nil {
+			return echo.NewHTTPError(http.StatusBadRequest, "invalid entry_end_time format")
+		}
+		eet = &t
+	}
+
+	t := domain.Ticket{
+		VisitorID:      req.VisitorID,
+		ProjectID:      req.ProjectID,
+		Status:         "issued",
+		EntryStartTime: est,
+		EntryEndTime:   eet,
+	}
 	id, err := h.uc.CreateTicket(c.Request().Context(), t)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())

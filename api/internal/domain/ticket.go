@@ -19,4 +19,5 @@ type TicketRepository interface {
 	ListByVisitor(ctx context.Context, visitorID uint64) ([]Ticket, error)
 	GetByID(ctx context.Context, id uint64) (Ticket, bool, error)
 	ListAll(ctx context.Context) ([]Ticket, error)
+	UpdateStatus(ctx context.Context, id uint64, status string) error
 }

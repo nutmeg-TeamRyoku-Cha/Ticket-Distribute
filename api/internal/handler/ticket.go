@@ -35,6 +35,10 @@ type ticketRes struct {
 	EntryEndTime   *string `json:"entry_end_time"`
 }
 
+type updateTicketStatusReq struct {
+	Status string `json:"status"`
+}
+
 func (h *TicketHandler) CreateTicket(c echo.Context) error {
 	var req createTicketReq
 	if err := c.Bind(&req); err != nil || req.VisitorID == 0 || req.ProjectID == 0 {
@@ -113,4 +117,26 @@ func (h *TicketHandler) GetTicket(c echo.Context) error {
 		return c.NoContent(http.StatusNotFound)
 	}
 	return c.JSON(http.StatusOK, res[0])
+}
+
+func (h *TicketHandler) UpdateTicketStatus(c echo.Context) error {
+	// URLからチケットIDを取得
+	idStr := c.Param("id")
+	id, err := strconv.ParseUint(idStr, 10, 64)
+	if err != nil || id == 0 {
+		return echo.NewHTTPError(http.StatusBadRequest, "invalid ticket id")
+	}
+
+	// リクエストボディから新しいステータスを取得
+	var req updateTicketStatusReq
+	if err := c.Bind(&req); err != nil || req.Status == "" {
+		return echo.NewHTTPError(http.StatusBadRequest, "invalid request: status is required")
+	}
+
+	// Usecaseを呼び出してステータスを更新
+	if err := h.uc.UpdateTicketStatus(c.Request().Context(), id, req.Status); err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+	}
+
+	return c.NoContent(http.StatusOK)
 }

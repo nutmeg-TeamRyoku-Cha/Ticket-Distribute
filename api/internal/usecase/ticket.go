@@ -1,0 +1,34 @@
+package usecase
+
+import (
+	"context"
+	"ticket-app/internal/domain"
+	"time"
+)
+
+type TicketUsecase interface {
+	CreateTicket(ctx context.Context, t domain.Ticket) (uint64, error)
+	ListTicketsByVisitor(ctx context.Context, visitorID uint64) ([]domain.Ticket, error)
+	GetTicketByID(ctx context.Context, id uint64) (domain.Ticket, bool, error)
+}
+
+type ticketUsecase struct {
+	repo domain.TicketRepository
+	now  func() time.Time
+}
+
+func NewTicketUsecase(repo domain.TicketRepository) TicketUsecase {
+	return &ticketUsecase{repo: repo, now: time.Now}
+}
+
+func (u *ticketUsecase) CreateTicket(ctx context.Context, t domain.Ticket) (uint64, error) {
+	return u.repo.Create(ctx, t)
+}
+
+func (u *ticketUsecase) ListTicketsByVisitor(ctx context.Context, visitorID uint64) ([]domain.Ticket, error) {
+	return u.repo.ListByVisitor(ctx, visitorID)
+}
+
+func (u *ticketUsecase) GetTicketByID(ctx context.Context, id uint64) (domain.Ticket, bool, error) {
+	return u.repo.GetByID(ctx, id)
+}

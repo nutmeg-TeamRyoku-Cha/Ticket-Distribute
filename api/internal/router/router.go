@@ -11,6 +11,7 @@ import (
 type Deps struct {
 	SessionHandler *handler.CreateSessionHandler
 	VisitorHandler *handler.VisitorHandler
+	TicketHandler  *handler.TicketHandler
 }
 
 func New(d Deps) *echo.Echo {
@@ -23,6 +24,11 @@ func New(d Deps) *echo.Echo {
 	e.GET("/visitors", d.VisitorHandler.ListVisitors)
 	e.GET("/visitors/:id", d.VisitorHandler.GetVisitor)
 	e.POST("/visitors", d.VisitorHandler.CreateVisitor)
+	// Tickets
+	e.POST("/tickets", d.TicketHandler.CreateTicket)                        // チケット作成
+	e.GET("/tickets/visitor/:id", d.TicketHandler.ListTicketsByVisitorPath) // 特定の訪問者のチケット一覧
+	e.GET("/tickets/:id", d.TicketHandler.GetTicket)                        // 特定のチケット取得
+	e.GET("/tickets", d.TicketHandler.ListTickets)                          // 特定の訪問者のチケット一覧 tickets?visitor_id=1 で1の人のチケットが見れる
 
 	return e
 }

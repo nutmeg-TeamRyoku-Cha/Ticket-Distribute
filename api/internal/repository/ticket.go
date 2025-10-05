@@ -127,3 +127,10 @@ func (r *TicketRepository) GetByID(ctx context.Context, id uint64) (domain.Ticke
 	}
 	return domain.Ticket{TicketID: tid, VisitorID: vid, ProjectID: pid, Status: status, EntryStartTime: estp, EntryEndTime: eetp}, true, nil
 }
+
+func (r *TicketRepository) UpdateStatus(ctx context.Context, id uint64, status string) error {
+	_, err := r.DB.ExecContext(ctx, `
+        UPDATE tickets SET status = ? WHERE ticket_id = ?
+    `, status, id)
+	return err
+}

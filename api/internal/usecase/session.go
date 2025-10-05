@@ -29,7 +29,7 @@ func (u sessionUsecase) CreateSession(ctx context.Context, visitorID uint64) (do
 	if err != nil {
 		return domain.TokenAndSession{}, err
 	}
-	if err := u.repo.Create(ctx, ts.LoginSession); err != nil {
+	if err := u.repo.Create(ctx, ts.Session); err != nil {
 		return domain.TokenAndSession{}, err
 	}
 	return ts, nil

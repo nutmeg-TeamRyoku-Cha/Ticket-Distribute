@@ -9,13 +9,13 @@ import (
 	"ticket-app/internal/domain"
 )
 
-type LoginSessionRepository struct{ DB *sql.DB }
+type SessionRepository struct{ DB *sql.DB }
 
-func NewSessionRepository(db *sql.DB) *LoginSessionRepository {
-	return &LoginSessionRepository{DB: db}
+func NewSessionRepository(db *sql.DB) *SessionRepository {
+	return &SessionRepository{DB: db}
 }
 
-func (r *LoginSessionRepository) Create(ctx context.Context, s domain.LoginSession) error {
+func (r *SessionRepository) Create(ctx context.Context, s domain.Session) error {
 	_, err := r.DB.ExecContext(ctx, `
 		INSERT INTO login_sessions (session_hash, visitor_id, expires_at)
 		VALUES (?, ?, ?)
@@ -26,7 +26,7 @@ func (r *LoginSessionRepository) Create(ctx context.Context, s domain.LoginSessi
 	return err
 }
 
-func (r *LoginSessionRepository) VisitorProfByToken(ctx context.Context, token string) (domain.Visitor, error) {
+func (r *SessionRepository) VisitorProfByToken(ctx context.Context, token string) (domain.Visitor, error) {
 	h, err := auth.SessionHashFromToken(token)
 	if err != nil {
 		return domain.Visitor{}, err

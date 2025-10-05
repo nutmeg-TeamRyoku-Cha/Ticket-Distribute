@@ -9,9 +9,10 @@ import (
 )
 
 type Deps struct {
-	SessionHandler *handler.SessionHandler
-	VisitorHandler *handler.VisitorHandler
-	TicketHandler  *handler.TicketHandler
+	SessionHandler  *handler.SessionHandler
+	VisitorHandler  *handler.VisitorHandler
+	TicketHandler   *handler.TicketHandler
+	BuildingHandler *handler.BuildingHandler
 }
 
 func New(d Deps) *echo.Echo {
@@ -22,17 +23,17 @@ func New(d Deps) *echo.Echo {
 	// Session関連のAPI
 	e.POST("/sessions", d.SessionHandler.CreateSession)
 	e.GET("/sessions/me", d.SessionHandler.Me)
-
 	// Visitor関連のAPI
 	e.GET("/visitors", d.VisitorHandler.ListVisitors)
 	e.GET("/visitors/:id", d.VisitorHandler.GetVisitor)
 	e.POST("/visitors", d.VisitorHandler.CreateVisitor)
-
-	// Tickets
+	// Ticket関連のAPI
 	e.POST("/tickets", d.TicketHandler.CreateTicket)                        // チケット作成
 	e.GET("/tickets/visitor/:id", d.TicketHandler.ListTicketsByVisitorPath) // 特定の訪問者のチケット一覧 idの訪問者のチケット一覧を取得
 	e.PATCH("/tickets/:id/status", d.TicketHandler.UpdateTicketStatus)      // チケットstatusのステータス更新 idのチケットのstatusを更新
 	e.GET("/tickets/:id", d.TicketHandler.GetTicket)                        // 特定のチケット取得 idのチケットを取得
 	e.GET("/tickets", d.TicketHandler.ListTickets)                          // チケット一覧取得
+	// Building関連のAPI
+	e.POST("/buildings", d.BuildingHandler.CreateBuilding)
 	return e
 }

@@ -10,19 +10,19 @@ import (
 
 var ErrSessionNotFound = errors.New("session not found or expired")
 
-type LoginSession struct {
+type Session struct {
 	SessionHash []byte
 	VisitorID   uint64
 	ExpiresAt   time.Time
 }
 
 type TokenAndSession struct {
-	Token        string
-	LoginSession LoginSession
+	Token   string
+	Session Session
 }
 
 type SessionRepository interface {
-	Create(ctx context.Context, s LoginSession) error
+	Create(ctx context.Context, s Session) error
 	VisitorProfByToken(ctx context.Context, token string) (Visitor, error)
 }
 
@@ -36,7 +36,7 @@ func IssueSession(visitorID uint64, now time.Time) (TokenAndSession, error) {
 
 	return TokenAndSession{
 		Token: token,
-		LoginSession: LoginSession{
+		Session: Session{
 			SessionHash: hash,
 			VisitorID:   visitorID,
 			ExpiresAt:   expires,

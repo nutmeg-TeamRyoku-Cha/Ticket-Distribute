@@ -45,7 +45,7 @@ func (h *SessionHandler) CreateSession(c echo.Context) error {
 		Name:     "session_token",
 		Value:    ts.Token,
 		Path:     "/",
-		Expires:  ts.LoginSession.ExpiresAt,
+		Expires:  ts.Session.ExpiresAt,
 		HttpOnly: true,
 		SameSite: http.SameSiteLaxMode,
 		Secure:   false,
@@ -53,7 +53,7 @@ func (h *SessionHandler) CreateSession(c echo.Context) error {
 
 	return c.JSON(http.StatusCreated, createSessionRes{
 		Token:     ts.Token,
-		ExpiresAt: ts.LoginSession.ExpiresAt.Format(time.RFC3339),
+		ExpiresAt: ts.Session.ExpiresAt.Format(time.RFC3339),
 	})
 }
 

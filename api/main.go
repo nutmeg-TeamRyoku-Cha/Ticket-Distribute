@@ -24,23 +24,27 @@ func main() {
 	defer db.Close()
 
 	//Repository
-	sessionRepo := repository.NewSessionRepository(db)
-	visitorRepo := repository.NewVisitorRepository(db)
-	ticketRepo := repository.NewTicketRepository(db)
+	sessionsRepo := repository.NewSessionRepository(db)
+	visitorsRepo := repository.NewVisitorRepository(db)
+	ticketsRepo := repository.NewTicketRepository(db)
+	buildingsRepo := repository.NewBuildingRepository(db)
 	//Usecase
-	sessionsUC := usecase.NewSessionUsecase(sessionRepo)
-	visitorsUC := usecase.NewVisitorUsecase(visitorRepo)
-	ticketsUC := usecase.NewTicketUsecase(ticketRepo)
+	sessionsUC := usecase.NewSessionUsecase(sessionsRepo)
+	visitorsUC := usecase.NewVisitorUsecase(visitorsRepo)
+	ticketsUC := usecase.NewTicketUsecase(ticketsRepo)
+	buildingsUC := usecase.NewBuildingUsecase(buildingsRepo)
 	//Handler
 	sessionsH := handler.NewSessionHandler(sessionsUC)
 	visitorsH := handler.NewVisitorHandler(visitorsUC)
 	ticketsH := handler.NewTicketHandler(ticketsUC)
+	buildingsH := handler.NewBuildingHandler(buildingsUC)
 
 	// Start Echo Server
 	e := router.New(router.Deps{
-		SessionHandler: sessionsH,
-		VisitorHandler: visitorsH,
-		TicketHandler:  ticketsH,
+		SessionHandler:  sessionsH,
+		VisitorHandler:  visitorsH,
+		TicketHandler:   ticketsH,
+		BuildingHandler: buildingsH,
 	})
 	go func() {
 		log.Println("Starting server on :8080")

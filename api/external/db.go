@@ -29,6 +29,7 @@ func mysqlDSNFromEnv() (driver, dsn string) {
 	q.Set("loc", "UTC")
 
 	dsn = fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?%s", user, pass, host, port, db, q.Encode())
+	fmt.Println(dsn)
 	return "mysql", dsn
 }
 

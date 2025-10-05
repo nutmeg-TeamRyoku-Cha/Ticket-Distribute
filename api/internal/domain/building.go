@@ -11,4 +11,6 @@ type Building struct {
 
 type BuildingRepository interface {
 	Create(ctx context.Context, b Building) (uint64, error)
+	List(ctx context.Context) ([]Building, error)
+	GetByID(ctx context.Context, id uint64) (Building, bool, error)
 }

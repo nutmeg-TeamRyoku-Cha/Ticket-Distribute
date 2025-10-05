@@ -35,5 +35,7 @@ func New(d Deps) *echo.Echo {
 	e.GET("/tickets", d.TicketHandler.ListTickets)                          // チケット一覧取得
 	// Building関連のAPI
 	e.POST("/buildings", d.BuildingHandler.CreateBuilding)
+	e.GET("/buildings", d.BuildingHandler.ListBuildings)
+	e.GET("/buildings/:id", d.BuildingHandler.GetBuilding)
 	return e
 }

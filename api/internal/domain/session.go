@@ -2,10 +2,13 @@ package domain
 
 import (
 	"context"
+	"errors"
 	"time"
 
 	"ticket-app/internal/auth"
 )
+
+var ErrSessionNotFound = errors.New("session not found or expired")
 
 type LoginSession struct {
 	SessionHash []byte
@@ -20,9 +23,10 @@ type TokenAndSession struct {
 
 type SessionRepository interface {
 	Create(ctx context.Context, s LoginSession) error
-	ResolveVisitorByToken(ctx context.Context, token string) (uint64, bool, error)
+	VisitorProfByToken(ctx context.Context, token string) (Visitor, error)
 }
 
+// ユーザーに見せない情報なので、Domainで実装
 func IssueSession(visitorID uint64, now time.Time) (TokenAndSession, error) {
 	token, hash, err := auth.NewSessionToken()
 	if err != nil {

@@ -13,6 +13,7 @@ type Deps struct {
 	VisitorHandler  *handler.VisitorHandler
 	TicketHandler   *handler.TicketHandler
 	BuildingHandler *handler.BuildingHandler
+	ProjectHandler  *handler.ProjectHandler
 }
 
 func New(d Deps) *echo.Echo {
@@ -37,5 +38,10 @@ func New(d Deps) *echo.Echo {
 	e.POST("/buildings", d.BuildingHandler.CreateBuilding)
 	e.GET("/buildings", d.BuildingHandler.ListBuildings)
 	e.GET("/buildings/:id", d.BuildingHandler.GetBuilding)
+	// Project関連のAPI
+	e.POST("/projects", d.ProjectHandler.CreateProject)
+	e.GET("/projects/:id", d.ProjectHandler.GetProject)
+	e.GET("/projects", d.ProjectHandler.ListProjects)
+	e.PATCH("/projects/:id/remaining_tickets", d.ProjectHandler.UpdateRemainingTickets)
 	return e
 }

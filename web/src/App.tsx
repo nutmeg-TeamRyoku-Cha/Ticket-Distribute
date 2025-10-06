@@ -4,7 +4,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/logo" element={<img src="/images/logo-icon.png"/>} />
+        <Route/>
       </Routes>
     </Router>
   );

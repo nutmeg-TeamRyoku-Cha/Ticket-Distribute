@@ -5,9 +5,12 @@ import Button from "./components/atomic/Button";
 import InputField from "./components/atomic/InputField";
 import Label from "./components/atomic/Label"
 import LogoIcon from "./components/atomic/LogoIcon"
+import TicketCard from "./components/atomic/TicketCard";
 
 function App() {
   const [text, setText] = useState("");
+  const handleClick = () => alert('テストボタン押された');
+
 
   return (
     <Router>
@@ -75,6 +78,20 @@ function App() {
                   variant="logo"
                   type="button"
                   onClick={() => alert("ロゴがクリックされました")}
+                />
+              </div>
+            }
+        />
+
+        <Route
+            path="/ticketcard"
+            element={
+              <div style={{ padding: 20 }}>
+                <TicketCard
+                  title="テストイベント"
+                  time="12:00～"
+                  location="テスト会場"
+                  onClick={() => alert("カードがクリックされました")}
                 />
               </div>
             }

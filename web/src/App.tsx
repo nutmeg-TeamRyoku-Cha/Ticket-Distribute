@@ -1,11 +1,10 @@
 import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
-import LogoIcon from "./pages/LogoIcon";
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/logo" element={<LogoIcon />} />
+        <Route/>
       </Routes>
     </Router>
   );

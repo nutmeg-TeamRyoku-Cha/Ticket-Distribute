@@ -50,3 +50,7 @@
   height: 20px;
   margin-right: 8px;
 }
+
+.button:hover {
+  background-color: #e0e0e0; /* 少しだけ暗く */
+}

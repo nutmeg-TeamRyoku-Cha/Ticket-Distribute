@@ -6,6 +6,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/login" element={<Login />} />
+        <Route path="/ImputField" element={<ImputField />} />
       </Routes>
     </Router>
       

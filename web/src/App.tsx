@@ -7,8 +7,8 @@ function App() {
     <Router>
       <Routes>
         <Route path="/login" element={<Login />} />
-        <Route path="/ImputField" element={<ImputField />} />
-        <Route path="/Label" element={<Label />} />
+        <Route path="/InputField" element={<InputField />} />
+        <Route path="/Label" element={<Label text="ニックネーム" htmlFor="nickname"/>} />
       </Routes>
     </Router>
       

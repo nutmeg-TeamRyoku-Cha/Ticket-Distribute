@@ -1,6 +1,5 @@
 import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import Login from "./pages/login"
-import TicketList from "./pages/TicketList"
 import Label from "./components/atomic/Label"
 
 function App() {

@@ -1,0 +1,19 @@
+.button {
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button-registration {
+  background-color: white;
+  color: black;
+  border: 2px solid black;
+}
+
+.button-login {
+  background-color: white;
+  color: black;
+  border: 2px solid black;
+}

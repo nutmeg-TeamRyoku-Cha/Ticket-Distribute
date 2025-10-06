@@ -1,9 +1,9 @@
 /* Label.css */
 .label {
-  font-size: 1em;      /* ← 要求通り */
+  font-size: 14px;
   font-weight: 500;
-  color: #374151;        /* gray-700 */
-  line-height: 1.1;
+  color: #374151;
+  line-height: 1.4;
 }
 
 .label .req {

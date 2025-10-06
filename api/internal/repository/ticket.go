@@ -85,14 +85,127 @@ func (r *TicketRepository) ListByVisitor(ctx context.Context, visitorID uint64) 
 		}
 		var estp, eetp *time.Time
 		if est.Valid {
-			tmp := est.Time
-			estp = &tmp
+			t := est.Time
+			estp = &t
 		}
 		if eet.Valid {
-			tmp := eet.Time
-			eetp = &tmp
+			t := eet.Time
+			eetp = &t
 		}
-		out = append(out, domain.Ticket{TicketID: id, VisitorID: vid, ProjectID: pid, Status: status, EntryStartTime: estp, EntryEndTime: eetp})
+		out = append(out, domain.Ticket{
+			TicketID: id, VisitorID: vid, ProjectID: pid, Status: status,
+			EntryStartTime: estp, EntryEndTime: eetp,
+		})
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (r *TicketRepository) ListByVisitorWithProject(ctx context.Context, visitorID uint64) ([]domain.TicketWithProject, error) {
+	rows, err := r.DB.QueryContext(ctx, `
+		SELECT
+		t.ticket_id, t.visitor_id, t.status, t.entry_start_time, t.entry_end_time,
+		p.project_id, p.project_name, p.requires_ticket, p.start_time, p.end_time,
+		b.building_id, b.building_name, b.latitude, b.longitude
+		FROM tickets t
+		JOIN projects  p ON p.project_id  = t.project_id
+		JOIN buildings b ON b.building_id = p.building_id
+		WHERE t.visitor_id = ?
+		ORDER BY t.ticket_id DESC
+	`, visitorID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var out []domain.TicketWithProject
+	for rows.Next() {
+		var (
+			ticketID, vID        uint64
+			status               string
+			entryStart, entryEnd sql.NullTime
+
+			projectID      uint64
+			projectName    sql.NullString
+			requiresTicket bool
+			projectStart   time.Time
+			projectEnd     sql.NullTime
+
+			buildingID   sql.NullInt64
+			buildingName sql.NullString
+			lat, lng     sql.NullFloat64
+		)
+		if err := rows.Scan(
+			&ticketID, &vID, &status, &entryStart, &entryEnd,
+			&projectID, &projectName, &requiresTicket, &projectStart, &projectEnd,
+			&buildingID, &buildingName, &lat, &lng,
+		); err != nil {
+			return nil, err
+		}
+
+		var esPtr, eePtr *time.Time
+		if entryStart.Valid {
+			t := entryStart.Time
+			esPtr = &t
+		}
+		if entryEnd.Valid {
+			t := entryEnd.Time
+			eePtr = &t
+		}
+
+		var endPtr *time.Time
+		if projectEnd.Valid {
+			t := projectEnd.Time
+			endPtr = &t
+		}
+
+		var (
+			bID            uint64
+			bName          string
+			latPtr, lngPtr *float64
+		)
+		if buildingID.Valid {
+			bID = uint64(buildingID.Int64)
+		}
+		if buildingName.Valid {
+			bName = buildingName.String
+		}
+		if lat.Valid {
+			v := lat.Float64
+			latPtr = &v
+		}
+		if lng.Valid {
+			v := lng.Float64
+			lngPtr = &v
+		}
+
+		projName := ""
+		if projectName.Valid {
+			projName = projectName.String
+		}
+
+		out = append(out, domain.TicketWithProject{
+			TicketID:       ticketID,
+			VisitorID:      vID,
+			Status:         status,
+			EntryStartTime: esPtr,
+			EntryEndTime:   eePtr,
+			Project: domain.ProjectBrief{
+				ProjectID:      projectID,
+				ProjectName:    projName,
+				RequiresTicket: requiresTicket,
+				StartTime:      projectStart,
+				EndTime:        endPtr,
+				Building: domain.BuildingBrief{
+					BuildingID:   bID,
+					BuildingName: bName,
+					Latitude:     latPtr,
+					Longitude:    lngPtr,
+				},
+			},
+		})
 	}
 	if err := rows.Err(); err != nil {
 		return nil, err

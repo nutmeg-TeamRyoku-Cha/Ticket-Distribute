@@ -1,0 +1,56 @@
+.button {
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+}
+
+.button-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.button-registration {
+  background-color: white;
+  color: black;
+  border: 2px solid black;
+}
+
+.button-login {
+  background-color: white;
+  color: black;
+  border: 2px solid black;
+}
+
+.button-ticket {
+  background-color: white;
+  color: black;
+  border: 2px solid black;
+}
+
+.button-event {
+  background-color: white;
+  color: black;
+  border: 2px solid black;
+}
+
+.button-setting {
+  background-color: white;
+  color: black;
+  border: 2px solid black;
+}
+
+.button-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+}
+
+.button:hover {
+  background-color: #e0e0e0; /* 少しだけ暗く */
+}

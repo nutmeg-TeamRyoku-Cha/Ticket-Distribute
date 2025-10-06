@@ -28,16 +28,19 @@ func main() {
 	visitorsRepo := repository.NewVisitorRepository(db)
 	ticketsRepo := repository.NewTicketRepository(db)
 	buildingsRepo := repository.NewBuildingRepository(db)
+	projectRepo := repository.NewProjectRepository(db)
 	//Usecase
 	sessionsUC := usecase.NewSessionUsecase(sessionsRepo)
 	visitorsUC := usecase.NewVisitorUsecase(visitorsRepo)
 	ticketsUC := usecase.NewTicketUsecase(ticketsRepo)
 	buildingsUC := usecase.NewBuildingUsecase(buildingsRepo)
+	projectUC := usecase.NewProjectUsecase(projectRepo)
 	//Handler
 	sessionsH := handler.NewSessionHandler(sessionsUC)
 	visitorsH := handler.NewVisitorHandler(visitorsUC)
 	ticketsH := handler.NewTicketHandler(ticketsUC)
 	buildingsH := handler.NewBuildingHandler(buildingsUC)
+	projectH := handler.NewProjectHandler(projectUC)
 
 	// Start Echo Server
 	e := router.New(router.Deps{
@@ -45,6 +48,7 @@ func main() {
 		VisitorHandler:  visitorsH,
 		TicketHandler:   ticketsH,
 		BuildingHandler: buildingsH,
+		ProjectHandler:  projectH,
 	})
 	go func() {
 		log.Println("Starting server on :8080")

@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import { useState } from "react";
 
+import Header from "./components/Header";
 import Button from "./components/atomic/Button";
 import InputField from "./components/atomic/InputField";
 import Label from "./components/atomic/Label"
@@ -9,11 +10,10 @@ import TicketCard from "./components/atomic/TicketCard";
 
 function App() {
   const [text, setText] = useState("");
-  const handleClick = () => alert('テストボタン押された');
-
-
+  
   return (
     <Router>
+      <Header />
       <Routes>
         {/*Button*/}
         <Route

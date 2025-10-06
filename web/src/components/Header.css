@@ -1,0 +1,18 @@
+.header {
+  background-color: white;
+  padding: 10px 24px;
+  position: relative;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-line {
+  height: 8px;
+  background-color: gold;
+  width: 100%;
+  margin-top: 8px;
+}

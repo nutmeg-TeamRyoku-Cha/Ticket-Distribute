@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 	"time"
@@ -37,8 +38,48 @@ type ticketRes struct {
 	EntryEndTime   *string `json:"entry_end_time"`
 }
 
+type buildingRes struct {
+	BuildingID   uint64 `json:"building_id"`
+	BuildingName string `json:"building_name"`
+	Latitude     string `json:"latitude,omitempty"`
+	Longitude    string `json:"longitude,omitempty"`
+}
+
+type projectRes struct {
+	ProjectID      uint64      `json:"project_id"`
+	ProjectName    string      `json:"project_name"`
+	Building       buildingRes `json:"building"`
+	RequiresTicket bool        `json:"requires_ticket"` // 必要なら "resuires_ticket"
+	StartTime      string      `json:"start_time"`
+	EndTime        string      `json:"end_time,omitempty"`
+}
+
+type ticketWithProjectRes struct {
+	TicketID       uint64     `json:"ticket_id"`
+	VisitorID      uint64     `json:"visitor_id"`
+	Project        projectRes `json:"project"`
+	Status         string     `json:"status"`
+	EntryStartTime *string    `json:"entry_start_time"`
+	EntryEndTime   *string    `json:"entry_end_time"`
+}
+
 type updateTicketStatusReq struct {
 	Status string `json:"status"`
+}
+
+func toRFC3339Ptr(t *time.Time) *string {
+	if t == nil {
+		return nil
+	}
+	s := t.UTC().Format(time.RFC3339)
+	return &s
+}
+
+func floatToStrPtr(v *float64) string {
+	if v == nil {
+		return ""
+	}
+	return fmt.Sprintf("%.3f", *v)
 }
 
 func (h *TicketHandler) CreateTicket(c echo.Context) error {
@@ -102,6 +143,46 @@ func ticketsToRes(ts []domain.Ticket) []ticketRes {
 	return out
 }
 
+func ticketJoinedToRes(in []domain.TicketWithProject) []ticketWithProjectRes {
+	out := make([]ticketWithProjectRes, 0, len(in))
+	for _, r := range in {
+		br := buildingRes{
+			BuildingID:   r.Project.Building.BuildingID,
+			BuildingName: r.Project.Building.BuildingName,
+		}
+		if s := floatToStrPtr(r.Project.Building.Latitude); s != "" {
+			br.Latitude = s
+		}
+		if s := floatToStrPtr(r.Project.Building.Longitude); s != "" {
+			br.Longitude = s
+		}
+
+		var endStr string
+		if r.Project.EndTime != nil {
+			endStr = r.Project.EndTime.UTC().Format(time.RFC3339)
+		}
+
+		pr := projectRes{
+			ProjectID:      r.Project.ProjectID,
+			ProjectName:    r.Project.ProjectName,
+			Building:       br,
+			RequiresTicket: r.Project.RequiresTicket,
+			StartTime:      r.Project.StartTime.UTC().Format(time.RFC3339),
+			EndTime:        endStr,
+		}
+
+		out = append(out, ticketWithProjectRes{
+			TicketID:       r.TicketID,
+			VisitorID:      r.VisitorID,
+			Project:        pr,
+			Status:         r.Status,
+			EntryStartTime: toRFC3339Ptr(r.EntryStartTime),
+			EntryEndTime:   toRFC3339Ptr(r.EntryEndTime),
+		})
+	}
+	return out
+}
+
 // ListTickets handles GET /tickets?visitor_id=1
 func (h *TicketHandler) ListTickets(c echo.Context) error {
 	ts, err := h.uc.ListAllTickets(c.Request().Context())
@@ -118,11 +199,11 @@ func (h *TicketHandler) ListTicketsByVisitorPath(c echo.Context) error {
 	if err != nil || vid == 0 {
 		return echo.NewHTTPError(http.StatusBadRequest, "invalid visitor_id")
 	}
-	ts, err := h.uc.ListTicketsByVisitor(c.Request().Context(), vid)
+	recs, err := h.uc.ListTicketsByVisitorWithProject(c.Request().Context(), vid)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
-	return c.JSON(http.StatusOK, ticketsToRes(ts))
+	return c.JSON(http.StatusOK, ticketJoinedToRes(recs))
 }
 
 func (h *TicketHandler) GetTicket(c echo.Context) error {

@@ -1,7 +1,7 @@
 import React from 'react';
 import LogoIconComponent from '../components/atomic/LogoIcon';
 
-const images = () => {
+const LogoIcon = () => {
   const handleLogo = () => {
     alert('25th-ロゴ');
   };
@@ -18,4 +18,4 @@ const images = () => {
   );
 };
 
-export default images;
+export default LogoIcon;

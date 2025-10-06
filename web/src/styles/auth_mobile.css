@@ -1,0 +1,104 @@
+:root{
+  --bg:#ffffff;
+  --fg:#111111;
+  --muted:#6b7280;
+  --border:#d1d5db;
+  --accent:#ff7f32;
+  --accent-fg:#ffffff;
+  --radius:12px;
+  --gap:12px;
+  --pad:16px;
+  --tap:44px;
+  --maxw:420px;
+  --font:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans JP",sans-serif;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: light){
+  :root{
+    --bg:#0b0b0c;
+    --fg:#f4f4f5;
+    --muted:#9ca3af;
+    --border:#2a2a2e;
+    --accent:#ff8a45;
+  }
+}
+
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--fg);
+  font-family:var(--font);
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+
+.screen{
+  min-height:100dvh;
+  padding:calc(env(safe-area-inset-top) + var(--pad)) var(--pad)
+           calc(env(safe-area-inset-bottom) + var(--pad));
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+  max-width:var(--maxw);  /* 常に幅を制限 */
+  margin:0 auto;          /* 常に横中央寄せ */
+}
+
+.title{ font-size:1.125rem; text-align:center; margin:0; }
+.note{ font-size:.8125rem; text-align:center; color:var(--muted); margin:0; }
+
+.form{ display:grid; gap:var(--gap); }
+
+.label{ font-size:.8125rem; color:var(--fg); }
+
+.input{
+  height:var(--tap);
+  width:100%;
+  padding:0 12px;
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  background:var(--bg);
+  color:var(--fg);
+  font-size:16px;
+  outline:none;
+}
+.input:focus{
+  border-color:var(--accent);
+  box-shadow:0 0 0 3px color-mix(in oklab, var(--accent) 25%, transparent);
+}
+
+.input[type="number"]::-webkit-outer-spin-button,
+.input[type="number"]::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0; }
+.input[type="number"]{ -moz-appearance:textfield; }
+.input[type="date"]{ line-height:var(--tap); }
+
+.button{
+  height:var(--tap);
+  border:none;
+  border-radius:var(--radius);
+  font-size:1rem;
+  font-weight:600;
+  background:#e5e7eb;
+  color:#111111;
+  touch-action:manipulation;
+}
+.button:active{ transform:translateY(1px); }
+.button.primary{ background:var(--accent); color:var(--accent-fg); }
+
+.divider{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  color:var(--muted);
+  font-size:.8125rem;
+  margin:2px 0;
+}
+.divider::before,
+.divider::after{
+  content:"";
+  flex:1;
+  height:1px;
+  background:var(--border);
+}

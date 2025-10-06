@@ -4,10 +4,10 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route></Route>
+        <Route/>
       </Routes>
     </Router>
-  )
+  );
 }
 
 export default App;

@@ -1,13 +1,17 @@
 import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
-import LogoIcon from "./pages/LogoIcon";
+import TicketCard from "./components/atomic/TicketCard";
 
 function App() {
+  const handleClick = () => alert('テストボタンが押されました')
   return (
-    <Router>
-      <Routes>
-        <Route path="/logo" element={<LogoIcon />} />
-      </Routes>
-    </Router>
+    <div>
+      <TicketCard
+        title="テストイベント"
+        time="12:00～"
+        location="テスト会場"
+        onClick={handleClick}
+      />
+    </div>
   );
 }
 

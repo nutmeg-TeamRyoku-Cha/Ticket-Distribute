@@ -27,3 +27,6 @@
   outline: none;
   border: none;
 }
+
+.footer-item { cursor: pointer; }
+.footer-item.is-active { opacity: 1; filter: none; }

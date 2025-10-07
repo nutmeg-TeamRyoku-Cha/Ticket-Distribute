@@ -5,3 +5,21 @@
   background-color: transparent;
   border: none;
 }
+
+.icon {
+  background: none;
+  border: none;
+  outline: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.icon:focus,
+.icon:active {
+  outline: none;
+  border: none;
+}
+
+.icon img {
+  display: block;
+}

@@ -16,3 +16,14 @@
   align-items: center;
   gap: 4px;
 }
+
+.footer-item img {
+  display: block;
+  border: none;
+  outline: none;
+}
+.footer-item img:focus,
+.footer-item img:active {
+  outline: none;
+  border: none;
+}

@@ -6,7 +6,7 @@ import InputField from "../components/atomic/InputField"
 import Button from "../components/atomic/Button"
 import Header from "../components/Header"
 
-import "./login.css"
+import "./Account.css"
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8080";
 
@@ -94,7 +94,7 @@ const LoginPage: React.FC = () => {
       if (session.token) localStorage.setItem("sessionToken", session.token);
       
       setMessage("ログインしました");
-      navigate("/TicketList", { replace: true });
+      navigate("/tickets", { replace: true });
       setLoginNickname("");
       setLoginBirthDate("");
     } catch (e: any) {

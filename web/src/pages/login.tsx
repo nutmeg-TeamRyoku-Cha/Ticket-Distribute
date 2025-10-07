@@ -137,7 +137,6 @@ const LoginPage: React.FC = () => {
           )} 
         </div>
       </div>
-      <Footer/>
     </>
   );
 };

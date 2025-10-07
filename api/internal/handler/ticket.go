@@ -45,7 +45,7 @@ type buildingRes struct {
 	Longitude    string `json:"longitude,omitempty"`
 }
 
-type projectRes struct {
+type pjRes struct {
 	ProjectID      uint64      `json:"project_id"`
 	ProjectName    string      `json:"project_name"`
 	Building       buildingRes `json:"building"`
@@ -55,12 +55,12 @@ type projectRes struct {
 }
 
 type ticketWithProjectRes struct {
-	TicketID       uint64     `json:"ticket_id"`
-	VisitorID      uint64     `json:"visitor_id"`
-	Project        projectRes `json:"project"`
-	Status         string     `json:"status"`
-	EntryStartTime *string    `json:"entry_start_time"`
-	EntryEndTime   *string    `json:"entry_end_time"`
+	TicketID       uint64  `json:"ticket_id"`
+	VisitorID      uint64  `json:"visitor_id"`
+	Project        pjRes   `json:"project"`
+	Status         string  `json:"status"`
+	EntryStartTime *string `json:"entry_start_time"`
+	EntryEndTime   *string `json:"entry_end_time"`
 }
 
 type updateTicketStatusReq struct {
@@ -162,7 +162,7 @@ func ticketJoinedToRes(in []domain.TicketWithProject) []ticketWithProjectRes {
 			endStr = r.Project.EndTime.UTC().Format(time.RFC3339)
 		}
 
-		pr := projectRes{
+		pr := pjRes{
 			ProjectID:      r.Project.ProjectID,
 			ProjectName:    r.Project.ProjectName,
 			Building:       br,

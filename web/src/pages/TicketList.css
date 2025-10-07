@@ -9,38 +9,50 @@
 
 .TicketList-frame {
   width: 100%;
-  max-width: 420px; 
+  max-width: 420px;
   padding: 20px 12px 32px;
 }
 
 .Ticket-form {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 16px; /* カード間の余白 */
 }
 
-.login-submitrow {
+.Ticket-list-wrapper {
   display: flex;
-  justify-content: center;
-  margin-top: 8px;
-  margin-bottom: 14px;
+  flex-direction: column;
+  gap: 24px;
 }
 
-.login-divider {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-  gap: 12px;
-  color: #888;
-  font-size: 12px;
-  margin: 8px 0 12px;
+.Ticket-date-group {
+  text-align: center;
 }
 
-.login-line {
-  height: 1px;
-  background-color: #ddd;
+/* --- ボタンのスタイル --- */
+.use-ticket-button {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  border: 2px solid #c09a62; /* ヘッダーやフッターのアイコンに合わせた色 */
+  background-color: transparent;
+  color: #c09a62;
 }
 
-@media (min-width: 480px) {
-  .login-frame { padding: 24px 16px 40px; }
+/* ボタンにカーソルが乗った時のスタイル */
+.use-ticket-button:hover:not(:disabled) {
+  background-color: #c09a62;
+  color: #fff;
+}
+
+/* 無効化されたボタンのスタイル */
+.use-ticket-button:disabled {
+  border-color: #d1d5db;
+  background-color: #f3f4f6;
+  color: #9ca3af;
+  cursor: not-allowed;
 }

@@ -1,0 +1,40 @@
+/* 新しいカード全体のスタイル */
+.new-ticket-card {
+  background-color: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  padding: 16px;
+  transition: all 0.3s ease;
+  text-align: left;
+}
+
+/* 使用済みカードのスタイル */
+.new-ticket-card.used {
+  background-color: #f9fafb;
+  filter: grayscale(80%);
+}
+
+/* --- 情報部分のスタイル --- */
+.new-ticket-info {
+  /* このエリア自体には余白は不要 */
+}
+
+.new-ticket-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #1f2937;
+  margin-bottom: 8px;
+}
+
+.new-ticket-time,
+.new-ticket-location {
+  font-size: 14px;
+  color: #4b5563;
+}
+
+/* --- ボタンを配置するエリアのスタイル --- */
+.new-ticket-action {
+  /* 上の情報エリアとの間に16pxの余白を追加 */
+  margin-top: 16px;
+}

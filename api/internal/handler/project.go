@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 	"ticket-app/internal/domain"
@@ -49,7 +50,28 @@ type updateRemainingTicketsReq struct {
 	RemainingTickets uint `json:"remaining_tickets"`
 }
 
-// --- Handler Methods ---
+type buildingResolvedRes struct {
+	BuildingID   uint64 `json:"building_id"`
+	BuildingName string `json:"building_name"`
+	Latitude     string `json:"latitude,omitempty"`
+	Longitude    string `json:"longitude,omitempty"`
+}
+
+type projectResolvedRes struct {
+	ProjectID      uint64              `json:"project_id"`
+	ProjectName    string              `json:"project_name"`
+	Building       buildingResolvedRes `json:"building"`
+	RequiresTicket bool                `json:"requires_ticket"`
+	StartTime      string              `json:"start_time"`
+	EndTime        string              `json:"end_time,omitempty"`
+}
+
+func floatToStr(v *float64) string {
+	if v == nil {
+		return ""
+	}
+	return fmt.Sprintf("%.6f", *v)
+}
 
 // CreateProject handles POST /projects
 func (h *ProjectHandler) CreateProject(c echo.Context) error {
@@ -156,4 +178,41 @@ func projectToRes(p domain.Project) projectRes {
 		StartTime:        p.StartTime,
 		EndTime:          p.EndTime,
 	}
+}
+
+func toProjectResolvedRes(in []domain.ProjectBrief) []projectResolvedRes {
+	out := make([]projectResolvedRes, 0, len(in))
+	for _, p := range in {
+		br := buildingResolvedRes{
+			BuildingID:   p.Building.BuildingID,
+			BuildingName: p.Building.BuildingName,
+		}
+		if s := floatToStr(p.Building.Latitude); s != "" {
+			br.Latitude = s
+		}
+		if s := floatToStr(p.Building.Longitude); s != "" {
+			br.Longitude = s
+		}
+		var endStr string
+		if p.EndTime != nil {
+			endStr = p.EndTime.UTC().Format(time.RFC3339)
+		}
+		out = append(out, projectResolvedRes{
+			ProjectID:      p.ProjectID,
+			ProjectName:    p.ProjectName,
+			Building:       br,
+			RequiresTicket: p.RequiresTicket,
+			StartTime:      p.StartTime.UTC().Format(time.RFC3339),
+			EndTime:        endStr,
+		})
+	}
+	return out
+}
+
+func (h *ProjectHandler) ListProjectsResolved(c echo.Context) error {
+	recs, err := h.uc.ListProjectsResolved(c.Request().Context())
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+	}
+	return c.JSON(http.StatusOK, toProjectResolvedRes(recs))
 }

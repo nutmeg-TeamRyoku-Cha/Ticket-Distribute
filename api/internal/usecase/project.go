@@ -12,6 +12,7 @@ type ProjectUsecase interface {
 	ListAllProjects(ctx context.Context) ([]domain.Project, error)
 	GetProjectByID(ctx context.Context, id uint64) (domain.Project, bool, error)
 	UpdateRemainingTickets(ctx context.Context, id uint64, remainingTickets uint) error
+	ListProjectsResolved(ctx context.Context) ([]domain.ProjectBrief, error)
 }
 
 type projectUsecase struct {
@@ -42,4 +43,8 @@ func (u *projectUsecase) ListAllProjects(ctx context.Context) ([]domain.Project,
 // UpdateRemainingTickets handles the logic for updating remaining tickets.
 func (u *projectUsecase) UpdateRemainingTickets(ctx context.Context, id uint64, remainingTickets uint) error {
 	return u.repo.UpdateRemainingTickets(ctx, id, remainingTickets)
+}
+
+func (u *projectUsecase) ListProjectsResolved(ctx context.Context) ([]domain.ProjectBrief, error) {
+	return u.repo.ListResolved(ctx)
 }

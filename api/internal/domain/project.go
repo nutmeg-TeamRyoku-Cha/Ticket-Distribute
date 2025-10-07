@@ -22,4 +22,5 @@ type ProjectRepository interface {
 	ListAll(ctx context.Context) ([]Project, error)
 	GetByID(ctx context.Context, id uint64) (Project, bool, error)
 	UpdateRemainingTickets(ctx context.Context, id uint64, remainingTickets uint) error
+	ListResolved(ctx context.Context) ([]ProjectBrief, error)
 }

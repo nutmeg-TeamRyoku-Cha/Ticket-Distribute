@@ -64,5 +64,6 @@ func New(d Deps) *echo.Echo {
 	e.GET("/projects/:id", d.ProjectHandler.GetProject)
 	e.GET("/projects", d.ProjectHandler.ListProjects)
 	e.PATCH("/projects/:id/remaining_tickets", d.ProjectHandler.UpdateRemainingTickets)
+	e.GET("/projects/resolved", d.ProjectHandler.ListProjectsResolved)
 	return e
 }

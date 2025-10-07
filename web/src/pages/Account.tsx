@@ -94,7 +94,7 @@ const LoginPage: React.FC = () => {
       if (session.token) localStorage.setItem("sessionToken", session.token);
       
       setMessage("ログインしました");
-      navigate("/tickets", { replace: true });
+      navigate("/ticket", { replace: true });
       setLoginNickname("");
       setLoginBirthDate("");
     } catch (e: any) {

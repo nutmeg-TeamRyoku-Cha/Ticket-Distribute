@@ -17,34 +17,34 @@ const Footer = () => {
   return (
     <footer className="footer">
       <div
-        className={`footer-item ${pathname === '/events' ? 'is-active' : ''}`}
+        className={`footer-item ${pathname === '/event' ? 'is-active' : ''}`}
         role="button"
         tabIndex={0}
-        aria-current={pathname === '/events' ? 'page' : undefined}
-        onClick={() => go('/events')}
-        onKeyDown={(e) => handleKey(e, '/events')}
+        aria-current={pathname === '/event' ? 'page' : undefined}
+        onClick={() => go('/event')}
+        onKeyDown={(e) => handleKey(e, '/event')}
       >
         <LogoIcon icon="/images/event-icon.png" alt="イベントアイコン" variant="footer" />
         <Label text="EVENT" variant="footer" color='#875318'/>
       </div>
       <div
-        className={`footer-item ${pathname === '/tickets' ? 'is-active' : ''}`}
+        className={`footer-item ${pathname === '/ticket' ? 'is-active' : ''}`}
         role="button"
         tabIndex={0}
-        aria-current={pathname === '/tickets' ? 'page' : undefined}
-        onClick={() => go('/tickets')}
-        onKeyDown={(e) => handleKey(e, '/tickets')}
+        aria-current={pathname === '/ticket' ? 'page' : undefined}
+        onClick={() => go('/ticket')}
+        onKeyDown={(e) => handleKey(e, '/ticket')}
       >
         <LogoIcon icon="/images/ticket-icon.png" alt="チケットアイコン" variant="footer" />
         <Label text="TICKET" variant="footer" color='#875318'/>
       </div>
       <div
-        className={`footer-item ${pathname === '/settings' ? 'is-active' : ''}`}
+        className={`footer-item ${pathname === '/setting' ? 'is-active' : ''}`}
         role="button"
         tabIndex={0}
-        aria-current={pathname === '/settings' ? 'page' : undefined}
-        onClick={() => go('/settings')}
-        onKeyDown={(e) => handleKey(e, '/settings')}
+        aria-current={pathname === '/setting' ? 'page' : undefined}
+        onClick={() => go('/setting')}
+        onKeyDown={(e) => handleKey(e, '/setting')}
       >
         <LogoIcon icon="/images/setting-icon.png" alt="設定アイコン" variant="footer" />
         <Label text="SETTING" variant="footer" color='#875318'/>

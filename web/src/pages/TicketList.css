@@ -4,25 +4,25 @@
   justify-content: center;
   align-items: flex-start;
   background-color: #fff;
-  padding: max(16px, env(safe-area-inset-top)) 12px 24px;
+  padding: max(1.6rem, env(safe-area-inset-top)) 1.2rem 2.4rem;
 }
 
 .TicketList-frame {
   width: 100%;
-  max-width: 420px;
-  padding: 20px 12px 32px;
+  max-width: 56rem; /* ★横長になった分、全体の幅を少し広げる (560px) */
+  padding: 2rem 1.2rem 3.2rem;
 }
 
 .Ticket-form {
   display: flex;
   flex-direction: column;
-  gap: 16px; /* カード間の余白 */
+  gap: 1.2rem; /* ★カード間の余白を少し詰める */
 }
 
 .Ticket-list-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 2.4rem;
 }
 
 .Ticket-date-group {
@@ -31,16 +31,17 @@
 
 /* --- ボタンのスタイル --- */
 .use-ticket-button {
-  width: 100%;
-  padding: 12px;
-  font-size: 16px;
+  width: auto; /* ★横幅を自動に */
+  padding: 0.8rem 1.6rem; /* ★パディングでボタンの大きさを調整 */
+  font-size: 1.4rem; /* ★文字サイズを調整 */
   font-weight: bold;
-  border-radius: 8px;
+  border-radius: 0.8rem;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
-  border: 2px solid #c09a62; /* ヘッダーやフッターのアイコンに合わせた色 */
+  border: 2px solid #c09a62;
   background-color: transparent;
   color: #c09a62;
+  white-space: nowrap; /* ★ボタン内のテキストが改行されないようにする */
 }
 
 /* ボタンにカーソルが乗った時のスタイル */

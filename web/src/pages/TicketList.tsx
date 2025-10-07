@@ -124,7 +124,7 @@ const TicketList: React.FC = () => {
                             onClick={() => handleUseTicket(ticket.ticket_id)}
                             disabled={isUsed}
                           >
-                            {isUsed ? '使用済み' : 'この整理券を使う'}
+                            {isUsed ? '使用済み' : '使う'}
                           </button>
                         </NewTicketCard>
                       );

@@ -1,10 +1,13 @@
 /* 新しいカード全体のスタイル */
 .new-ticket-card {
+  display: flex; /* ★情報とボタンを横並びにする */
+  justify-content: space-between; /* ★両端に寄せる */
+  align-items: center; /* ★上下中央揃えにする */
   background-color: #fff;
   border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  padding: 16px;
+  border-radius: 1.2rem;
+  box-shadow: 0 0.2rem 0.4rem -0.1rem rgb(0 0 0 / 0.08); /* 影を少し薄く */
+  padding: 1.4rem 1.6rem; /* パディングを調整 */
   transition: all 0.3s ease;
   text-align: left;
 }
@@ -17,24 +20,24 @@
 
 /* --- 情報部分のスタイル --- */
 .new-ticket-info {
-  /* このエリア自体には余白は不要 */
+  /* display: flex の子要素になったため、余白は不要 */
 }
 
 .new-ticket-title {
-  font-size: 20px;
-  font-weight: bold;
+  font-size: 1.6rem; /* 少し小さくしてバランスを取る */
+  font-weight: 600; /* 太さを少し抑える */
   color: #1f2937;
-  margin-bottom: 8px;
+  margin-bottom: 0.4rem; /* 行間を調整 */
 }
 
 .new-ticket-time,
 .new-ticket-location {
-  font-size: 14px;
+  font-size: 1.3rem; /* 少し小さく */
   color: #4b5563;
 }
 
 /* --- ボタンを配置するエリアのスタイル --- */
 .new-ticket-action {
-  /* 上の情報エリアとの間に16pxの余白を追加 */
-  margin-top: 16px;
+  flex-shrink: 0; /* ★ボタンが縮まないようにする */
+  margin-left: 1.6rem; /* ★情報とボタンの間に余白を設ける */
 }

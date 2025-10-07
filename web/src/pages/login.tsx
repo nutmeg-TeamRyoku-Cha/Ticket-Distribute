@@ -45,6 +45,9 @@ const LoginPage: React.FC = () => {
       }
       const data: { visitor_id: number } = await res.json();
       setMessage(`登録しました（ID: ${data.visitor_id}）`);
+      setRegNickname("");
+      setRegBirthDate("");
+      setRegPartySize("");
     } catch (e: any) {
       setMessage(`登録に失敗しました: ${e.message ?? e}`);
     } finally {
@@ -53,7 +56,46 @@ const LoginPage: React.FC = () => {
   };
 
   const handleLogin = async () => {
-    setMessage("ログインAPI接続は後で実装します");
+    if (!loginNickname || !loginBirthDate) {
+      setMessage("ニックネームと生年月日を入力してください");
+      return;
+    }
+    setSubmitting(true);
+    setMessage(null);
+    try {
+      // 1) visitor_id を解決
+      const r1 = await fetch(`${API_BASE}/visitors/resolve`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nickname: loginNickname, birth_date: loginBirthDate }),
+      });
+      if (!r1.ok) {
+        const t = await r1.text();
+        throw new Error(t || `HTTP ${r1.status}`);
+      }
+      const { visitor_id } = await r1.json() as { visitor_id: number };
+
+      // 2) セッション作成
+      const r2 = await fetch(`${API_BASE}/sessions`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ visitor_id }),
+        // Cookie運用にするなら: credentials: "include",
+      });
+      if (!r2.ok) {
+        const t = await r2.text();
+        throw new Error(t || `HTTP ${r2.status}`);
+      }
+      const session = await r2.json() as { token?: string; expires_at?: string };
+      if (session.token) localStorage.setItem("sessionToken", session.token);
+      setMessage("ログインしました");
+      setLoginNickname("");
+      setLoginBirthDate("");
+    } catch (e: any) {
+      setMessage(`ログインに失敗しました: ${e.message ?? e}`);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -67,11 +109,11 @@ const LoginPage: React.FC = () => {
           </div>
 
           <div className="login-form">
-            <InputField label="ニックネーム" value="" onChange={(e) => setRegNickname(e.target.value)} />
-            <InputField label="生年月日" value="" onChange={(e) => setRegBirthDate(e.target.value)} placeholder="1995/1/1" />
-            <InputField label="来場者人数" type="number" value="" onChange={(e) => setRegPartySize(e.target.value)} />
+            <InputField label="ニックネーム" value={regNickname} onChange={(e) => setRegNickname(e.target.value)} />
+            <InputField label="生年月日" type="date" value={regBirthDate} onChange={(e) => setRegBirthDate(e.target.value)} placeholder="1995-01-01" />
+            <InputField label="来場者人数" type="number" value={regPartySize} onChange={(e) => setRegPartySize(e.target.value)} />
             <div className="login-submitrow">
-              <Button type="button" label="登録する" />
+              <Button type="button" label={submitting ? "送信中..." : "登録する"} onClick={handleRegister} disabled={submitting} />
             </div>
           </div>
 
@@ -82,12 +124,17 @@ const LoginPage: React.FC = () => {
           </div>
 
           <div className="login-form">
-            <InputField label="ニックネーム" value="" onChange={(e) => setLoginNickname(e.target.value)} />
-            <InputField label="生年月日" value="" onChange={(e) => setLoginBirthDate(e.target.value)} placeholder="1995/1/1" />
+            <InputField label="ニックネーム" value={loginNickname} onChange={(e) => setLoginNickname(e.target.value)} placeholder="例: Taro" />
+            <InputField label="生年月日" type="date" value={loginBirthDate} onChange={(e) => setLoginBirthDate(e.target.value)} placeholder="1995-01-01" />
             <div className="login-submitrow">
-              <Button type="button" label="ログイン" />
+              <Button type="button" label={submitting ? "送信中..." : "ログイン"} onClick={handleLogin} disabled={submitting} />
             </div>
-          </div>  
+          </div>
+          {message && (
+            <div style={{ marginTop: 12, textAlign: "center", color: "red" }}>
+              {message}
+            </div>
+          )} 
         </div>
       </div>
       <Footer/>

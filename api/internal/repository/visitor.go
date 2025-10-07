@@ -74,3 +74,23 @@ func (r *VisitorRepository) GetByID(ctx context.Context, id uint64) (domain.Visi
 	}
 	return domain.Visitor{VisitorID: vid, Nickname: nickname, BirthDate: bd, PartySize: ps}, true, nil
 }
+
+func (r *VisitorRepository) GetByNicknameAndBirthDate(ctx context.Context, nickname string, birthDate time.Time) (domain.Visitor, bool, error) {
+	var v domain.Visitor
+	// birth_date は DATE 型想定（YYYY-MM-DD）
+	row := r.DB.QueryRowContext(ctx, `
+    SELECT visitor_id, nickname, birth_date, party_size
+    FROM visitors
+    WHERE nickname = ? AND birth_date = ?
+    ORDER BY visitor_id ASC
+    LIMIT 1
+  `, nickname, birthDate.Format("2006-01-02"))
+	switch err := row.Scan(&v.VisitorID, &v.Nickname, &v.BirthDate, &v.PartySize); err {
+	case nil:
+		return v, true, nil
+	case sql.ErrNoRows:
+		return domain.Visitor{}, false, nil
+	default:
+		return domain.Visitor{}, false, err
+	}
+}

@@ -1,13 +1,13 @@
 /* 新しいカード全体のスタイル */
 .new-ticket-card {
-  display: flex; /* ★情報とボタンを横並びにする */
-  justify-content: space-between; /* ★両端に寄せる */
-  align-items: center; /* ★上下中央揃えにする */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   background-color: #fff;
   border: 1px solid #e5e7eb;
   border-radius: 1.2rem;
-  box-shadow: 0 0.2rem 0.4rem -0.1rem rgb(0 0 0 / 0.08); /* 影を少し薄く */
-  padding: 1.4rem 1.6rem; /* パディングを調整 */
+  box-shadow: 0 0.2rem 0.4rem -0.1rem rgb(0 0 0 / 0.08);
+  padding: 1.2rem 1.6rem;
   transition: all 0.3s ease;
   text-align: left;
 }
@@ -24,20 +24,20 @@
 }
 
 .new-ticket-title {
-  font-size: 1.6rem; /* 少し小さくしてバランスを取る */
-  font-weight: 600; /* 太さを少し抑える */
+  font-size: 1.4rem; /* ★小さく */
+  font-weight: 600;
   color: #1f2937;
-  margin-bottom: 0.4rem; /* 行間を調整 */
+  margin-bottom: 0.3rem;
 }
 
 .new-ticket-time,
 .new-ticket-location {
-  font-size: 1.3rem; /* 少し小さく */
+  font-size: 1.1rem; /* ★小さく */
   color: #4b5563;
 }
 
 /* --- ボタンを配置するエリアのスタイル --- */
 .new-ticket-action {
-  flex-shrink: 0; /* ★ボタンが縮まないようにする */
-  margin-left: 1.6rem; /* ★情報とボタンの間に余白を設ける */
+  flex-shrink: 0;
+  margin-left: 1.6rem;
 }

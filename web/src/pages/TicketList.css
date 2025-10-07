@@ -9,14 +9,14 @@
 
 .TicketList-frame {
   width: 100%;
-  max-width: 56rem; /* ★横長になった分、全体の幅を少し広げる (560px) */
+  max-width: 56rem;
   padding: 2rem 1.2rem 3.2rem;
 }
 
 .Ticket-form {
   display: flex;
   flex-direction: column;
-  gap: 1.2rem; /* ★カード間の余白を少し詰める */
+  gap: 1rem;
 }
 
 .Ticket-list-wrapper {
@@ -31,9 +31,9 @@
 
 /* --- ボタンのスタイル --- */
 .use-ticket-button {
-  width: auto; /* ★横幅を自動に */
-  padding: 0.8rem 1.6rem; /* ★パディングでボタンの大きさを調整 */
-  font-size: 1.4rem; /* ★文字サイズを調整 */
+  width: auto;
+  padding: 0.6rem 1.6rem;
+  font-size: 1.2rem; /* ★小さく */
   font-weight: bold;
   border-radius: 0.8rem;
   cursor: pointer;
@@ -41,7 +41,7 @@
   border: 2px solid #c09a62;
   background-color: transparent;
   color: #c09a62;
-  white-space: nowrap; /* ★ボタン内のテキストが改行されないようにする */
+  white-space: nowrap;
 }
 
 /* ボタンにカーソルが乗った時のスタイル */

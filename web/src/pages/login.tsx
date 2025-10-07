@@ -21,8 +21,8 @@ const LoginPage: React.FC = () => {
       <div className="login-container">
         <div className="login-frame">
           <div style={{ textAlign: "center", lineHeight: 1.35, marginBottom: 12 }}>
-            <Label text="ようこそ！技大祭へ！" fontSize={32} color="#222" /> <br></br> <br></br>
-            <Label text="新規の方は来場者登録をお願いします" fontSize={16} color="#666" /> <br></br> <br></br>
+            <Label text="ようこそ！技大祭へ！" fontSize={20} color="#222" /> <br></br> <br></br>
+            <Label text="新規の方は来場者登録をお願いします" fontSize={14} color="#666" /> <br></br> <br></br>
           </div>
 
           <div className="login-form">
@@ -36,7 +36,7 @@ const LoginPage: React.FC = () => {
 
           <div className="login-divider">
             <div className="login-line"> </div>
-              <Label text="アカウントをお持ちの方" fontSize={16} color="#666" />
+              <Label text="アカウントをお持ちの方" fontSize={14} color="#666" />
             <div className="login-line"> </div>
           </div>
 

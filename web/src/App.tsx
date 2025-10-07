@@ -102,6 +102,20 @@ function App() {
               </div>
             }
         />
+        <Route
+            path="/icon"
+            element={
+              <div style={{ padding: 20 }}>
+                <LogoIcon
+                  icon="/images/setting-icon.png"   // public/images にある画像ファイルを指定
+                  alt="アプリのロゴ"
+                  variant="logo"
+                  type="button"
+                  onClick={() => alert("ロゴがクリックされました")}
+                />
+              </div>
+            }
+        />
         <Route path="/login" element={<LoginPage />} />
       </Routes>
     </Router>

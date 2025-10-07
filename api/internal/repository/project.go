@@ -86,3 +86,73 @@ func (r *ProjectRepository) UpdateRemainingTickets(ctx context.Context, id uint6
     `, remainingTickets, id)
 	return err
 }
+
+func (r *ProjectRepository) ListResolved(ctx context.Context) ([]domain.ProjectBrief, error) {
+	rows, err := r.DB.QueryContext(ctx, `
+        SELECT
+            p.project_id,
+            p.project_name,
+            p.requires_ticket,
+            p.start_time,
+            p.end_time,
+            b.building_id,
+            b.building_name,
+            b.latitude,
+            b.longitude
+        FROM projects  p
+        JOIN buildings b ON b.building_id = p.building_id
+        ORDER BY p.project_id ASC
+    `)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var out []domain.ProjectBrief
+	for rows.Next() {
+		var (
+			pid   uint64
+			pname sql.NullString
+			req   bool
+			st    time.Time
+			et    sql.NullTime
+			bid   sql.NullInt64
+			bname sql.NullString
+			lat   sql.NullFloat64
+			lng   sql.NullFloat64
+		)
+		if err := rows.Scan(&pid, &pname, &req, &st, &et, &bid, &bname, &lat, &lng); err != nil {
+			return nil, err
+		}
+		var endPtr *time.Time
+		if et.Valid {
+			t := et.Time
+			endPtr = &t
+		}
+		var latPtr, lngPtr *float64
+		if lat.Valid {
+			v := lat.Float64
+			latPtr = &v
+		}
+		if lng.Valid {
+			v := lng.Float64
+			lngPtr = &v
+		}
+		out = append(out, domain.ProjectBrief{
+			ProjectID:      pid,
+			ProjectName:    pname.String,
+			RequiresTicket: req,
+			StartTime:      st,
+			EndTime:        endPtr,
+			Building: domain.BuildingBrief{
+				BuildingID:   uint64(bid.Int64),
+				BuildingName: bname.String,
+				Latitude:     latPtr,
+				Longitude:    lngPtr,
+			},
+		})
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return out, nil
+}

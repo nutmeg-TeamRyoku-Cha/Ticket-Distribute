@@ -1,26 +1,78 @@
+/* コンテナ・フレームは TicketList.css を踏襲 */
 .EventList-container {
   min-height: 100svh;
   display: flex;
   justify-content: center;
   align-items: flex-start;
   background-color: #fff;
-  padding: max(16px, env(safe-area-inset-top)) 12px 24px;
+  padding: max(1.6rem, env(safe-area-inset-top)) 1.2rem 2.4rem;
 }
 
 .EventList-frame {
   width: 100%;
-  max-width: 420px; 
-  padding: 20px 12px 32px;
+  max-width: 48rem;
+  padding: 2rem 1.2rem 3.2rem;
 }
 
-.ticket-card-wrapper {
+.EventList-status {
+  text-align: center;
+  color: #666;
+  padding: 1.2rem 0;
+}
+.EventList-status.error { color: #b91c1c; }
+
+.EventList-date-group { margin-bottom: 2.4rem; text-align: center; }
+
+.EventList-list-wrapper {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 16px;
+  gap: 1.2rem;
+  margin-top: 0.8rem;
 }
 
-.ticket-card-button {
+/* カード */
+.EventList-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,.04);
+}
+
+.EventList-card-header {
   display: flex;
+  align-items: center;
+  gap: .6rem;
   justify-content: center;
+  margin-bottom: .6rem;
+}
+
+.EventList-card-title {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.EventList-badge {
+  display: inline-block;
+  font-size: .75rem;
+  padding: .1rem .5rem;
+  border: 2px solid #c09a62;
+  color: #c09a62;
+  border-radius: .6rem;
+}
+
+.EventList-meta {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: .4rem .6rem;
+  font-size: .95rem;
+}
+
+.EventList-meta-label {
+  color: #666;
+  text-align: right;
+}
+.EventList-meta-value {
+  color: #222;
+  text-align: left;
 }

@@ -20,7 +20,7 @@ const TicketList: React.FC = () => {
   const [visitor, setVisitor] = useState<Visitor | null>(null);
   const [groupedTickets, setGroupedTickets] = useState<GroupedTickets>({});
   const [error, setError] = useState<string | null>(null);
-  const visitorId = 1; //ここがvisitor１限定です
+  const visitorId = 2; //ここがvisitor１限定です
 
   const fetchAndProcessTickets = async () => {
     try {
@@ -124,7 +124,7 @@ const TicketList: React.FC = () => {
                             onClick={() => handleUseTicket(ticket.ticket_id)}
                             disabled={isUsed}
                           >
-                            {isUsed ? '使用済み' : 'この整理券を使う'}
+                            {isUsed ? 'used' : 'use'}
                           </button>
                         </NewTicketCard>
                       );

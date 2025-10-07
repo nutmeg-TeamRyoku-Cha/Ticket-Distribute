@@ -1,7 +1,13 @@
 import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import { useState } from "react";
 
+//Header & Footer
 import Header from "./components/Header";
+
+//Page
+import LoginPage from "./pages/login";
+
+//Component
 import Button from "./components/atomic/Button";
 import InputField from "./components/atomic/InputField";
 import Label from "./components/atomic/Label"
@@ -13,7 +19,6 @@ function App() {
   
   return (
     <Router>
-      <Header />
       <Routes>
         {/*Button*/}
         <Route
@@ -96,6 +101,7 @@ function App() {
               </div>
             }
         />
+        <Route path="/login" element={<LoginPage />} />
       </Routes>
     </Router>
   );

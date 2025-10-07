@@ -25,6 +25,13 @@ export type ProjectResolvedRes = {
   end_time?: string;
 };
 
+type Visitor = {
+  visitor_id: number;
+  nickname: string;
+  birth_date: string;
+  party_size: number;
+};
+
 const API_BASE = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8080";
 
 const formatDateTimeJST = (iso: string) => {
@@ -39,6 +46,8 @@ const EventList: React.FC = () => {
   const [items, setItems] = useState<ProjectResolvedRes[]>([]);
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [visitor, setVisitor] = useState<Visitor | null>(null);
+  const visitorId = 1;
 
   useEffect(() => {
     (async () => {
@@ -51,6 +60,16 @@ const EventList: React.FC = () => {
         setErrorMessage(e?.message ?? "fetch error");
       } finally {
         setLoading(false);
+      }
+    })();
+    (async () => {
+      try {
+        const res = await fetch(`${API_BASE}/visitors/${visitorId}`, { credentials: "omit" });
+        if (!res.ok) return;
+        const v: Visitor = await res.json();
+        setVisitor(v);
+      } catch {
+        /* noop */
       }
     })();
   }, []);
@@ -73,6 +92,11 @@ const EventList: React.FC = () => {
       <Header title="企画一覧" />
       <main className="EventList-container">
         <section className="EventList-frame">
+          <div style={{ textAlign: "center", lineHeight: 1.35, marginBottom: 12 }}>
+            {/* ★ 追加: TicketList と同じヘッダー */}
+            <Label text={`${visitor?.nickname ?? "..."} さん`} fontSize={20} color="#222" /> <br /><br />
+            <Label text={`来場者人数 : ${visitor?.party_size ?? "..."}人`} fontSize={14} color="#666" /> <br /><br />
+          </div>
           <div style={{ textAlign: "center", lineHeight: 1.35, marginBottom: 12 }}>
             <Label text="企画一覧" fontSize={20} color="#222" />
           </div>

@@ -1,0 +1,29 @@
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 12px 0;
+  background-color: #fff;
+  z-index: 1000;
+}
+.footer-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.footer-item img {
+  display: block;
+  border: none;
+  outline: none;
+}
+.footer-item img:focus,
+.footer-item img:active {
+  outline: none;
+  border: none;
+}

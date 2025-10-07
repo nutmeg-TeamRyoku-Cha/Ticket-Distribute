@@ -3,6 +3,7 @@ import { useState } from "react";
 
 //Header & Footer
 import Header from "./components/Header";
+import Footer from "./components/Footer";
 
 //Page
 import LoginPage from "./pages/login";
@@ -97,6 +98,20 @@ function App() {
                   time="12:00～"
                   location="テスト会場"
                   onClick={() => alert("カードがクリックされました")}
+                />
+              </div>
+            }
+        />
+        <Route
+            path="/icon"
+            element={
+              <div style={{ padding: 20 }}>
+                <LogoIcon
+                  icon="/images/setting-icon.png"   // public/images にある画像ファイルを指定
+                  alt="アプリのロゴ"
+                  variant="logo"
+                  type="button"
+                  onClick={() => alert("ロゴがクリックされました")}
                 />
               </div>
             }

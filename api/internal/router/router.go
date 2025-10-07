@@ -6,6 +6,7 @@ import (
 	"ticket-app/internal/handler"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 type Deps struct {
@@ -18,6 +19,24 @@ type Deps struct {
 
 func New(d Deps) *echo.Echo {
 	e := echo.New()
+
+	// 基本ミドルウェア
+	e.Use(middleware.Recover())
+	e.Use(middleware.Logger())
+	// CORS（Vite想定。必要に応じて追加）
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{
+			"http://localhost:3000",
+			"http://127.0.0.1:3000",
+		},
+		AllowMethods: []string{
+			http.MethodGet, http.MethodPost, http.MethodPut,
+			http.MethodPatch, http.MethodDelete, http.MethodOptions,
+		},
+		AllowHeaders: []string{
+			"Content-Type", "Authorization",
+		},
+	}))
 
 	e.GET("/healthz", func(c echo.Context) error { return c.NoContent(http.StatusOK) })
 

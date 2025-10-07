@@ -1,20 +1,60 @@
-import React, {useState} from "react"
-
+import React, { useState } from "react"
 import Label from "../components/atomic/Label"
 import InputField from "../components/atomic/InputField"
 import Button from "../components/atomic/Button"
 import Header from "../components/Header"
-
-import "./login.css"
 import Footer from "../components/Footer"
+import "./login.css"
+
+const API_BASE = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8080";
 
 const LoginPage: React.FC = () => {
   const [regNickname, setRegNickname] = useState("");
   const [regBirthDate, setRegBirthDate] = useState("");
   const [regPartySize, setRegPartySize] = useState("");
-
   const [loginNickname, setLoginNickname] = useState("");
   const [loginBirthDate, setLoginBirthDate] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [message, setMessage] = useState<string | null>(null);
+
+  const handleRegister = async () => {
+    if (!regNickname || !regBirthDate || !regPartySize) {
+      setMessage("未入力があります");
+      return;
+    }
+    const partySize = Number(regPartySize);
+    if (!Number.isInteger(partySize) || partySize < 1) {
+      setMessage("来場者人数は1以上の整数にしてください");
+      return;
+    }
+    setSubmitting(true);
+    setMessage(null);
+    try {
+      const res = await fetch(`${API_BASE}/visitors`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nickname: regNickname,
+          birth_date: regBirthDate,
+          party_size: partySize,
+        }),
+      });
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(text || `HTTP ${res.status}`);
+      }
+      const data: { visitor_id: number } = await res.json();
+      setMessage(`登録しました（ID: ${data.visitor_id}）`);
+    } catch (e: any) {
+      setMessage(`登録に失敗しました: ${e.message ?? e}`);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleLogin = async () => {
+    setMessage("ログインAPI接続は後で実装します");
+  };
 
   return (
     <>

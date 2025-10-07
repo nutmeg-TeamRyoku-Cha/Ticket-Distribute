@@ -9,6 +9,7 @@ import Footer from "./components/Footer";
 import LoginPage from "./pages/login";
 import TicketList from "./pages/TicketList";
 import GetTicket from "./pages/GetTicket";
+import EventList from "./pages/EventList";
 
 //Component
 import Button from "./components/atomic/Button";
@@ -121,6 +122,7 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/TicketList" element={<TicketList />} />
         <Route path="/GetTicket" element={<GetTicket />} />
+        <Route path="/EventList" element={<EventList />} />
       </Routes>
     </Router>
   );

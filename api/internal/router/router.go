@@ -36,6 +36,7 @@ func New(d Deps) *echo.Echo {
 		AllowHeaders: []string{
 			"Content-Type", "Authorization",
 		},
+		AllowCredentials: true,
 	}))
 
 	e.GET("/healthz", func(c echo.Context) error { return c.NoContent(http.StatusOK) })

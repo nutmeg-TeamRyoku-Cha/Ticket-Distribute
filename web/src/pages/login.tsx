@@ -80,7 +80,7 @@ const LoginPage: React.FC = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ visitor_id }),
-        // Cookie運用にするなら: credentials: "include",
+        credentials: "include",
       });
       if (!r2.ok) {
         const t = await r2.text();

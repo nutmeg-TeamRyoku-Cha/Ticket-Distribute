@@ -34,6 +34,15 @@ type listVisitorRes struct {
 	PartySize int    `json:"party_size"`
 }
 
+type resolveVisitorReq struct {
+	Nickname  string `json:"nickname"`
+	BirthDate string `json:"birth_date"` // YYYY-MM-DD
+}
+
+type resolveVisitorRes struct {
+	VisitorID uint64 `json:"visitor_id"`
+}
+
 func (h *VisitorHandler) CreateVisitor(c echo.Context) error {
 	var req createVisitorReq
 	if err := c.Bind(&req); err != nil || req.Nickname == "" || req.BirthDate == "" || req.PartySize < 1 {
@@ -88,4 +97,23 @@ func (h *VisitorHandler) GetVisitor(c echo.Context) error {
 		PartySize: v.PartySize,
 	}
 	return c.JSON(http.StatusOK, res)
+}
+
+func (h *VisitorHandler) ResolveVisitor(c echo.Context) error {
+	var req resolveVisitorReq
+	if err := c.Bind(&req); err != nil || req.Nickname == "" || req.BirthDate == "" {
+		return echo.NewHTTPError(http.StatusBadRequest, "invalid request")
+	}
+	bd, err := time.Parse("2006-01-02", req.BirthDate)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, "invalid birth_date format")
+	}
+	v, ok, err := h.uc.GetVisitorByNicknameAndBirthDate(c.Request().Context(), req.Nickname, bd)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+	}
+	if !ok {
+		return echo.NewHTTPError(http.StatusNotFound, "not found")
+	}
+	return c.JSON(http.StatusOK, resolveVisitorRes{VisitorID: v.VisitorID})
 }

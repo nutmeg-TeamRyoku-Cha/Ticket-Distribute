@@ -24,7 +24,7 @@ type createSessionRes struct {
 	ExpiresAt string `json:"expires_at"`
 }
 
-type resolveVisitorRes struct {
+type resolveVisitorbySessionRes struct {
 	VisitorID uint64    `json:"visitor_id"`
 	Nickname  string    `json:"nickname"`
 	BirthDate time.Time `json:"birth_date"`
@@ -70,7 +70,7 @@ func (h *SessionHandler) Me(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
 
-	return c.JSON(http.StatusOK, resolveVisitorRes{
+	return c.JSON(http.StatusOK, resolveVisitorbySessionRes{
 		VisitorID: v.VisitorID,
 		Nickname:  v.Nickname,
 		BirthDate: v.BirthDate,

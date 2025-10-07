@@ -6,6 +6,7 @@ import (
 	"ticket-app/internal/handler"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 type Deps struct {
@@ -19,6 +20,24 @@ type Deps struct {
 func New(d Deps) *echo.Echo {
 	e := echo.New()
 
+	// 基本ミドルウェア
+	e.Use(middleware.Recover())
+	e.Use(middleware.Logger())
+	// CORS（Vite想定。必要に応じて追加）
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{
+			"http://localhost:3000",
+			"http://127.0.0.1:3000",
+		},
+		AllowMethods: []string{
+			http.MethodGet, http.MethodPost, http.MethodPut,
+			http.MethodPatch, http.MethodDelete, http.MethodOptions,
+		},
+		AllowHeaders: []string{
+			"Content-Type", "Authorization",
+		},
+	}))
+
 	e.GET("/healthz", func(c echo.Context) error { return c.NoContent(http.StatusOK) })
 
 	// Session関連のAPI
@@ -28,6 +47,7 @@ func New(d Deps) *echo.Echo {
 	e.GET("/visitors", d.VisitorHandler.ListVisitors)
 	e.GET("/visitors/:id", d.VisitorHandler.GetVisitor)
 	e.POST("/visitors", d.VisitorHandler.CreateVisitor)
+	e.POST("/visitors/resolve", d.VisitorHandler.ResolveVisitor)
 	// Ticket関連のAPI
 	e.POST("/tickets", d.TicketHandler.CreateTicket)                        // チケット作成
 	e.GET("/tickets/visitor/:id", d.TicketHandler.ListTicketsByVisitorPath) // 特定の訪問者のチケット一覧 idの訪問者のチケット一覧を取得

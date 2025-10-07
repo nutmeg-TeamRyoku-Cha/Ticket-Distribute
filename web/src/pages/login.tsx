@@ -6,6 +6,7 @@ import Button from "../components/atomic/Button"
 import Header from "../components/Header"
 
 import "./login.css"
+import Footer from "../components/Footer"
 
 const LoginPage: React.FC = () => {
   const [regNickname, setRegNickname] = useState("");
@@ -49,6 +50,7 @@ const LoginPage: React.FC = () => {
           </div>  
         </div>
       </div>
+      <Footer/>
     </>
   );
 };

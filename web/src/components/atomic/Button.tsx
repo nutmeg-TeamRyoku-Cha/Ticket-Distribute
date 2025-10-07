@@ -4,10 +4,7 @@ import "./Button.css";
 export type ButtonVariant =
   | "primary"
   | "registration"
-  | "login"
-  | "ticket"
-  | "event"
-  | "setting";
+  | "login";
 
 export type ButtonProps = {
   label: React.ReactNode;
@@ -32,12 +29,6 @@ const Button: React.FC<ButtonProps> = ({
         return `button button-registration ${className}`;
       case "login":
         return `button button-login ${className}`;
-      case "ticket":
-        return `button button-ticket ${className}`;
-      case "event":
-        return `button button-event ${className}`;
-      case "setting":
-        return `button button-setting ${className}`;
       default:
         return `button button-primary ${className}`;
     }

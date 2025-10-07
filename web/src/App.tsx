@@ -3,6 +3,7 @@ import { useState } from "react";
 
 //Header & Footer
 import Header from "./components/Header";
+import Footer from "./components/Footer";
 
 //Page
 import LoginPage from "./pages/login";

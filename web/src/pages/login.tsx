@@ -17,7 +17,7 @@ const LoginPage: React.FC = () => {
 
   return (
     <>
-      <Header title="ログイン2" />
+      <Header title="ログイン" />
       <div className="login-container">
         <div className="login-frame">
           <div style={{ textAlign: "center", lineHeight: 1.35, marginBottom: 12 }}>

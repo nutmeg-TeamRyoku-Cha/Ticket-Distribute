@@ -1,14 +1,18 @@
 import React, { useState } from "react"
+import { useNavigate } from "react-router-dom"
+
 import Label from "../components/atomic/Label"
 import InputField from "../components/atomic/InputField"
 import Button from "../components/atomic/Button"
 import Header from "../components/Header"
-import Footer from "../components/Footer"
+
 import "./login.css"
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8080";
 
 const LoginPage: React.FC = () => {
+  const navigate = useNavigate();
+
   const [regNickname, setRegNickname] = useState("");
   const [regBirthDate, setRegBirthDate] = useState("");
   const [regPartySize, setRegPartySize] = useState("");
@@ -80,7 +84,7 @@ const LoginPage: React.FC = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ visitor_id }),
-        credentials: "include",
+        //credentials: "include",
       });
       if (!r2.ok) {
         const t = await r2.text();
@@ -88,7 +92,9 @@ const LoginPage: React.FC = () => {
       }
       const session = await r2.json() as { token?: string; expires_at?: string };
       if (session.token) localStorage.setItem("sessionToken", session.token);
+      
       setMessage("ログインしました");
+      navigate("/TicketList", { replace: true });
       setLoginNickname("");
       setLoginBirthDate("");
     } catch (e: any) {

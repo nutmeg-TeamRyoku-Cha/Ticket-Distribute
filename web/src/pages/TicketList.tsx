@@ -20,7 +20,7 @@ const TicketList: React.FC = () => {
   const [visitor, setVisitor] = useState<Visitor | null>(null);
   const [groupedTickets, setGroupedTickets] = useState<GroupedTickets>({});
   const [error, setError] = useState<string | null>(null);
-  const visitorId = 2; //ここがvisitor１限定です
+  const visitorId = 1; //ここがvisitor１限定です
 
   const fetchAndProcessTickets = async () => {
     try {

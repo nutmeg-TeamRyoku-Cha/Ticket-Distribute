@@ -1,0 +1,41 @@
+.TicketList-container {
+  min-height: 100svh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background-color: #fff;
+  padding: max(16px, env(safe-area-inset-top)) 12px 24px;
+}
+
+.TicketList-frame {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 480px;
+  width: 100%;
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.Ticket-Detail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.Ticket-Member {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.GetTicket-Button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+}

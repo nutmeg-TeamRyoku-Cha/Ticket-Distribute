@@ -41,7 +41,7 @@ const EventList: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
-    const run = async () => {
+    (async () => {
       try {
         const res = await fetch(`${API_BASE}/projects/resolved`, { credentials: "omit" });
         if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
@@ -52,8 +52,7 @@ const EventList: React.FC = () => {
       } finally {
         setLoading(false);
       }
-    };
-    run();
+    })();
   }, []);
 
   const grouped = useMemo(() => {
@@ -109,11 +108,9 @@ const EventList: React.FC = () => {
                         className="use-ticket-button"
                         aria-label={`${title} の整理券を選ぶ`}
                         onClick={() => {
+                          // URLは固定 /getticket。IDは state と sessionStorage に保存（リロード耐性）
                           sessionStorage.setItem("selectedProjectId", String(p.project_id));
-                          sessionStorage.setItem("selectedProject", JSON.stringify(p));
-                          navigate(`/get-ticket?project_id=${p.project_id}`, {
-                            state: { projectId: p.project_id },
-                          });
+                          navigate("/getticket", { state: { projectId: p.project_id } });
                         }}
                       >
                         {p.requires_ticket ? "整理券を選ぶ" : "詳細を見る"}

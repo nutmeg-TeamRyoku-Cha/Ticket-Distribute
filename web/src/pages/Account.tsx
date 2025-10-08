@@ -48,7 +48,7 @@ const LoginPage: React.FC = () => {
         throw new Error(text || `HTTP ${res.status}`);
       }
       const data: { visitor_id: number } = await res.json();
-      setMessage(`登録しました（ID: ${data.visitor_id}）`);
+      setMessage(`登録しました`);
       setRegNickname("");
       setRegBirthDate("");
       setRegPartySize("");

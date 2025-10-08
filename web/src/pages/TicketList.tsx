@@ -96,7 +96,7 @@ const TicketList: React.FC = () => {
       <Header title="整理券一覧" />
       <div className="TicketList-container">
         <div className="TicketList-frame">
-          <div style={{ textAlign: "center", lineHeight: 1.35, marginBottom: 24 }}>
+          <div style={{ textAlign: "center", lineHeight: 1.35, marginBottom: 36 }}>
             <Label text={`${visitor?.nickname ?? "..."} さん`} fontSize={20} color="#222" /> <br /><br />
             <Label text={`来場者人数 : ${visitor?.party_size ?? "..."}人`} fontSize={14} color="#666" />
           </div>

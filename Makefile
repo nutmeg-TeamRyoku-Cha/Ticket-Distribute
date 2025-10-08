@@ -16,6 +16,10 @@ log_api: #apiのlog
 log_db: #dbのlog
 	docker compose logs -f db
 
+run-prod:
+	docker compose -f docker-compose.prod.yml build --no-cache
+	docker compose -f docker-compose.prod.yml up -d
+
 #DBコンテナにアクセス
 conn_db:
 	docker exec -it mysql mysql -uroot -proot app_db

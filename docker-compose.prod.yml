@@ -1,0 +1,52 @@
+services:
+  web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile.prod
+    depends_on:
+      - api
+    ports:
+      - "443:443"
+      - "80:80"
+    volumes:
+      - ./certs:/etc/nginx/certs:ro
+    restart: always
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile.prod
+    environment:
+      PORT: "8080"
+      DB_HOST: "mysql"
+      DB_PORT: "3306"
+      DB_USER: "ryokucha"
+      DB_PASSWORD: "gyokuro"
+      DB_NAME: "app_db"
+    depends_on:
+      - db
+    restart: always
+  db:
+    image: mysql:8.0
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: app_db
+      MYSQL_USER: ryokucha
+      MYSQL_PASSWORD: gyokuro
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-proot"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_0900_ai_ci
+      - --skip-character-set-client-handshake
+volumes:
+  db_data:

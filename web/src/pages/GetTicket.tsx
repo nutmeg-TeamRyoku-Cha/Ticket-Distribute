@@ -17,7 +17,7 @@ const GetTicket: React.FC = () => {
 
   return (
     <>
-      <Header title="整理券一覧" />
+      <Header title="整理券獲得" />
       <div className="TicketList-container">
         <div className="TicketList-frame">
           <div style={{ textAlign: "center", lineHeight: 1.35, marginBottom: 12 }}>

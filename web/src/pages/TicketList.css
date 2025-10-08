@@ -9,7 +9,7 @@
 
 .TicketList-frame {
   width: 100%;
-  max-width: 48rem;            /* 上限は48rem */
+  max-width: 20rem;            /* 上限は48rem */
   margin: 0 auto;              /* 上限未満のとき中央寄せ */
   box-sizing: border-box;      /* paddingぶんも含めて幅計算 */
   flex: 1 1 48rem;             /* shrink-wrapを防止し“面”で確保 */

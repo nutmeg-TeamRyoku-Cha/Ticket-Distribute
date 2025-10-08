@@ -34,11 +34,19 @@ type Visitor = {
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8080";
 
-const formatDateTimeJST = (iso: string) => {
-  const d = new Date(iso);
-  const date = d.toLocaleDateString("ja-JP");
-  const time = d.toLocaleTimeString("ja-JP", { hour: "2-digit", minute: "2-digit" });
-  return `${date} ${time}`;
+const formatDate = (dateString: string): string => {
+  const date = new Date(dateString);
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  const dayOfWeek = ["日", "月", "火", "水", "木", "金", "土"][date.getDay()];
+  return `${month}/${day}(${dayOfWeek})`;
+};
+const formatTime = (isoString: string | null | undefined): string => {
+  if (!isoString) return "";
+  const d = new Date(isoString);
+  const h = d.getUTCHours().toString().padStart(2, "0");
+  const m = d.getUTCMinutes().toString().padStart(2, "0");
+  return `${h}:${m}`;
 };
 
 const EventList: React.FC = () => {
@@ -75,16 +83,17 @@ const EventList: React.FC = () => {
   }, []);
 
   const grouped = useMemo(() => {
-    const m = new Map<string, ProjectResolvedRes[]>();
+    const map = new Map<string, ProjectResolvedRes[]>();
     for (const p of items) {
-      const key = new Date(p.start_time).toISOString().slice(0, 10);
-      if (!m.has(key)) m.set(key, []);
-      m.get(key)!.push(p);
+      // TicketList と同じく ISO を文字列のまま分割して日付キー化
+      const key = p.start_time.split("T")[0];
+      if (!map.has(key)) map.set(key, []);
+      map.get(key)!.push(p);
     }
-    for (const arr of m.values()) {
+    for (const arr of map.values()) {
       arr.sort((a, b) => +new Date(a.start_time) - +new Date(b.start_time));
     }
-    return Array.from(m.entries()).sort(([a], [b]) => (a < b ? -1 : 1));
+    return Array.from(map.entries()).sort(([a], [b]) => (a < b ? -1 : 1));
   }, [items]);
 
   return (
@@ -92,7 +101,7 @@ const EventList: React.FC = () => {
       <Header title="企画一覧" />
       <main className="EventList-container">
         <section className="EventList-frame">
-          <div style={{ textAlign: "center", lineHeight: 1.35, marginBottom: 12 }}>
+          <div style={{ textAlign: "center", lineHeight: 1.35, marginBottom: 24 }}>
             <Label text={`${visitor?.nickname ?? "..."} さん`} fontSize={20} color="#222" /> <br /><br />
             <Label text={`来場者人数 : ${visitor?.party_size ?? "..."}人`} fontSize={14} color="#666" /> <br /><br />
           </div>
@@ -106,15 +115,13 @@ const EventList: React.FC = () => {
             <div className="EventList-status">企画がありません</div>
           )}
 
-          {!loading && !errorMessage && grouped.map(([date, list]) => (
-            <div key={date} className="EventList-date-group">
-              <Label text={new Date(date).toLocaleDateString("ja-JP")} fontSize={16} color="#666" />
+          {!loading && !errorMessage && grouped.map(([dateKey, list]) => (
+            <div key={dateKey} className="EventList-date-group">
+              <Label text={formatDate(dateKey)} fontSize={20} color="#000" />
               <div className="EventList-list-wrapper">
                 {list.map((p) => {
                   const title = p.project_name;
-                  const time = p.end_time
-                    ? `${formatDateTimeJST(p.start_time)}`
-                    : `${formatDateTimeJST(p.start_time)}`;
+                  const time = `${formatTime(p.start_time)}～${formatTime(p.end_time)}`;
                   const location = p.building.building_name;
 
                   return (

@@ -101,7 +101,7 @@ const TicketList: React.FC = () => {
             <Label text={`来場者人数 : ${visitor?.party_size ?? "..."}人`} fontSize={14} color="#666" />
           </div>
           <div style={{ textAlign: "center", lineHeight: 1.35, marginBottom: 12 }}>
-            <Label text="企画一覧" fontSize={20} color="#222" />
+            <Label text="お手持ちの整理券一覧" fontSize={20} color="#222" />
           </div>
           <div className="Ticket-list-wrapper">
             {Object.keys(groupedTickets).length > 0 ? (

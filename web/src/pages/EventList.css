@@ -11,7 +11,7 @@
 .EventList-frame {
   width: 100%;
   max-width: 20rem;
-  padding: 2rem 1.2rem 3.2rem;
+  padding: 1rem 1.2rem 3.2rem;
 }
 
 .EventList-status {
@@ -77,3 +77,31 @@
   text-align: left;
 }
 
+.EventList-tabrow {
+  display: flex;
+  gap: 5px;
+}
+
+
+.toggle-chip {
+  padding: 0.3rem 0.9rem;
+  border: 2px solid #c09a62;
+  background: #fff;
+  color: #c09a62;
+  font-weight: 700;
+  font-size: 0.95rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color .15s ease, color .15s ease, border-color .15s ease;
+}
+
+.toggle-chip.is-active {
+  background: #c09a62;
+  color: #fff;
+  border-color: #c09a62;
+}
+
+.toggle-chip:focus-visible {
+  outline: 3px solid rgba(192,154,98,.35);
+  outline-offset: 2px;
+}

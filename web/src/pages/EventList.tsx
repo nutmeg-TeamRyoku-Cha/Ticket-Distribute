@@ -5,6 +5,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Label from "../components/atomic/Label";
 import NewTicketCard from "../components/atomic/NewTicketCard";
+import Button from "../components/atomic/Button";
 
 import "./EventList.css";
 import "./TicketList.css";
@@ -55,7 +56,8 @@ const EventList: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [visitor, setVisitor] = useState<Visitor | null>(null);
-  const visitorId = 2;
+  const [tab, setTab] = useState<"requires" | "free">("requires");
+  const visitorId = 1;
 
   useEffect(() => {
     (async () => {
@@ -120,8 +122,26 @@ const EventList: React.FC = () => {
               <div style={{ marginBottom: 12 }}>
                 <Label text={formatDate(dateKey)} fontSize={20} color="#000" />
               </div>
+              {/* タブ：要整理券 / 自由参加 */}
+              <div className="EventList-tabrow" style={{ margin: 10, textAlign: "left" }}>
+                <Button
+                  label="要整理券"
+                  variant="chip"
+                  className={`toggle-chip ${tab === "requires" ? "is-active" : ""}`}
+                  onClick={() => setTab("requires")}
+                />
+                <Button
+                  label="自由参加"
+                  variant="chip"
+                  className={`toggle-chip ${tab === "free" ? "is-active" : ""}`}
+                  onClick={() => setTab("free")}
+                />
+              </div>
+
               <div className="EventList-list-wrapper">
-                {list.map((p) => {
+                {list
+                  .filter(p => tab === "requires" ? p.requires_ticket : !p.requires_ticket)
+                  .map((p) => {
                   const title = p.project_name;
                   const time = `${formatTime(p.start_time)}～${formatTime(p.end_time)}`;
                   const location = p.building.building_name;
@@ -135,18 +155,19 @@ const EventList: React.FC = () => {
                       isUsed={false}
                       data-projectid={p.project_id}
                     >
-                      <button
-                        type="button"
-                        className="use-ticket-button"
-                        aria-label={`${title} の整理券を選ぶ`}
-                        onClick={() => {
-                          // URLは固定 /getticket。IDは state と sessionStorage に保存（リロード耐性）
-                          sessionStorage.setItem("selectedProjectId", String(p.project_id));
-                          navigate("/getticket", { state: { projectId: p.project_id } });
-                        }}
-                      >
-                        {p.requires_ticket ? "get" : "detail"}
-                      </button>
+                        {p.requires_ticket ? (
+                          <button
+                            type="button"
+                            className="use-ticket-button"
+                            aria-label={`${title} の整理券を選ぶ`}
+                            onClick={() => {
+                              sessionStorage.setItem("selectedProjectId", String(p.project_id));
+                              navigate("/getticket", { state: { projectId: p.project_id } });
+                            }}
+                          >整理券獲得</button>
+                        ) : (
+                          <br></br>
+                        )}
                     </NewTicketCard>
                   );
                 })}

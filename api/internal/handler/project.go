@@ -46,8 +46,8 @@ type projectRes struct {
 	EndTime          time.Time `json:"end_time"`
 }
 
-type updateRemainingTicketsReq struct {
-	RemainingTickets uint `json:"remaining_tickets"`
+type decreaseTicketsReq struct {
+	DecreaseTickets uint `json:"decrease_tickets"`
 }
 
 type buildingResolvedRes struct {
@@ -138,17 +138,26 @@ func (h *ProjectHandler) UpdateRemainingTickets(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, "invalid project id")
 	}
 
-	var req updateRemainingTicketsReq
+	var req decreaseTicketsReq
 	if err := c.Bind(&req); err != nil {
-		// Note: The default value for uint is 0, so a check for negative values isn't necessary.
 		return echo.NewHTTPError(http.StatusBadRequest, "invalid request: "+err.Error())
 	}
+	if req.DecreaseTickets == 0 {
+		return echo.NewHTTPError(http.StatusBadRequest, "decrease_tickets must be > 0")
+	}
 
-	if err := h.uc.UpdateRemainingTickets(c.Request().Context(), id, req.RemainingTickets); err != nil {
+	remaining, err := h.uc.DecreaseRemainingTickets(
+		c.Request().Context(), id, req.DecreaseTickets,
+	)
+	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
 
-	return c.NoContent(http.StatusOK)
+	return c.JSON(http.StatusOK, map[string]any{
+		"project_id":        id,
+		"decreased_by":      req.DecreaseTickets,
+		"current_remaining": remaining,
+	})
 }
 
 // projectsToRes converts a slice of domain.Project to a slice of projectRes.

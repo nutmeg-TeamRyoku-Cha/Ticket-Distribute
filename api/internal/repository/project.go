@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"database/sql"
+	"fmt"
 	"ticket-app/internal/domain"
 	"time"
 )
@@ -82,9 +83,30 @@ func (r *ProjectRepository) ListAll(ctx context.Context) ([]domain.Project, erro
 // UpdateRemainingTickets updates the number of remaining tickets for a specific project.
 func (r *ProjectRepository) UpdateRemainingTickets(ctx context.Context, id uint64, remainingTickets uint) error {
 	_, err := r.DB.ExecContext(ctx, `
-        UPDATE projects SET remaining_tickets = ? WHERE project_id = ?
+        UPDATE projects
+           SET remaining_tickets = ?
+         WHERE project_id = ?
     `, remainingTickets, id)
 	return err
+}
+
+// (Optional improved atomic version)
+func (r *ProjectRepository) DecreaseRemainingTickets(ctx context.Context, id uint64, dec uint) (uint, error) {
+	res, err := r.DB.ExecContext(ctx, `
+        UPDATE projects
+           SET remaining_tickets = remaining_tickets - ?
+         WHERE project_id = ? AND remaining_tickets >= ?`, dec, id, dec)
+	if err != nil {
+		return 0, err
+	}
+	n, _ := res.RowsAffected()
+	if n == 0 {
+		return 0, fmt.Errorf("insufficient tickets or project not found")
+	}
+	// 新しい残数を返す
+	var newRemain uint
+	err = r.DB.QueryRowContext(ctx, `SELECT remaining_tickets FROM projects WHERE project_id = ?`, id).Scan(&newRemain)
+	return newRemain, err
 }
 
 func (r *ProjectRepository) ListResolved(ctx context.Context) ([]domain.ProjectBrief, error) {

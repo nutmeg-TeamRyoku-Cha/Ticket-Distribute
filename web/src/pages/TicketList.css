@@ -2,14 +2,18 @@
   min-height: 100svh;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items: stretch;
   background-color: #fff;
   padding: max(1.6rem, env(safe-area-inset-top)) 1.2rem 2.4rem;
 }
 
 .TicketList-frame {
   width: 100%;
-  max-width: 48rem; /* ★横長レイアウト用に最大幅を広げる */
+  max-width: 48rem;            /* 上限は48rem */
+  margin: 0 auto;              /* 上限未満のとき中央寄せ */
+  box-sizing: border-box;      /* paddingぶんも含めて幅計算 */
+  flex: 1 1 48rem;             /* shrink-wrapを防止し“面”で確保 */
+  min-width: 0;                /* Grid/長い単語での縮み・はみ出し対策 */
   padding: 2rem 1.2rem 3.2rem;
 }
 

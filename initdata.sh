@@ -6,9 +6,6 @@ set -euo pipefail
 BASE_URL="https://localhost/api"
 CURL_OPTS=(-sS -k -H "Content-Type: application/json; charset=utf-8")
 
-# BASE_URL="http://localhost:8080"
-# CURL_OPTS=(-sS -H "Content-Type: application/json; charset=utf-8")
-
 post() {
   local path="$1"; shift
   local body="$1"; shift || true
@@ -61,9 +58,12 @@ post "/projects" '{
 }'
 
 post "/projects" '{
-  "project_name": "ラーメン",
+  "project_name": "縁日",
   "building_id": 2,
-  "requires_ticket": true,
+  "requires_ticket": false,
   "remaining_tickets": 1000,
   "start_time": "2025-10-27T09:00:00Z",
-  "end_time":   "2025_
+  "end_time":   "2025-10-27T16:00:00Z"
+}'
+
+echo "== 完了 =="

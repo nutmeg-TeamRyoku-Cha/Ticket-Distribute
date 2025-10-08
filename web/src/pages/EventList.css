@@ -26,8 +26,8 @@
 .EventList-list-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
-  margin-top: 0.8rem;
+  gap: 1rem;   /* TicketList と同一 */
+  margin-top: 0; /* 見出し側で管理 */
 }
 
 /* カード */

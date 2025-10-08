@@ -55,7 +55,7 @@ const EventList: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [visitor, setVisitor] = useState<Visitor | null>(null);
-  const visitorId = 1;
+  const visitorId = 2;
 
   useEffect(() => {
     (async () => {
@@ -101,7 +101,7 @@ const EventList: React.FC = () => {
       <Header title="企画一覧" />
       <main className="EventList-container">
         <section className="EventList-frame">
-          <div style={{ textAlign: "center", lineHeight: 1.35, marginBottom: 24 }}>
+          <div style={{ textAlign: "center", lineHeight: 1.35, marginBottom: 12 }}>
             <Label text={`${visitor?.nickname ?? "..."} さん`} fontSize={20} color="#222" /> <br /><br />
             <Label text={`来場者人数 : ${visitor?.party_size ?? "..."}人`} fontSize={14} color="#666" /> <br /><br />
           </div>
@@ -117,7 +117,9 @@ const EventList: React.FC = () => {
 
           {!loading && !errorMessage && grouped.map(([dateKey, list]) => (
             <div key={dateKey} className="EventList-date-group">
-              <Label text={formatDate(dateKey)} fontSize={20} color="#000" />
+              <div style={{ marginBottom: 12 }}>
+                <Label text={formatDate(dateKey)} fontSize={20} color="#000" />
+              </div>
               <div className="EventList-list-wrapper">
                 {list.map((p) => {
                   const title = p.project_name;

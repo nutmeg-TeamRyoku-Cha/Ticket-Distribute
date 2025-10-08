@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import React from "react"
 
 import Label from "../components/atomic/Label"
 import Button from "../components/atomic/Button"
@@ -8,13 +8,6 @@ import Footer from "../components/Footer"
 import "./GetTicket.css"
 
 const GetTicket: React.FC = () => {
-  const [regNickname, setRegNickname] = useState("");
-  const [regBirthDate, setRegBirthDate] = useState("");
-  const [regPartySize, setRegPartySize] = useState("");
-
-  const [loginNickname, setLoginNickname] = useState("");
-  const [loginBirthDate, setLoginBirthDate] = useState("");
-
   return (
     <>
       <Header title="整理券獲得" />

@@ -15,6 +15,7 @@ function App() {
       <Routes>
         <Route path="/account" element={<LoginPage />} />
         <Route path="/ticket" element={<TicketList />} />
+        <Route path="/event" element={<EventList />} />
         <Route path="/getticket" element={<GetTicket />} />
         <Route path="/event" element={<EventList />} />
       </Routes>

@@ -93,7 +93,6 @@ const EventList: React.FC = () => {
       <main className="EventList-container">
         <section className="EventList-frame">
           <div style={{ textAlign: "center", lineHeight: 1.35, marginBottom: 12 }}>
-            {/* ★ 追加: TicketList と同じヘッダー */}
             <Label text={`${visitor?.nickname ?? "..."} さん`} fontSize={20} color="#222" /> <br /><br />
             <Label text={`来場者人数 : ${visitor?.party_size ?? "..."}人`} fontSize={14} color="#666" /> <br /><br />
           </div>
@@ -114,7 +113,7 @@ const EventList: React.FC = () => {
                 {list.map((p) => {
                   const title = p.project_name;
                   const time = p.end_time
-                    ? `${formatDateTimeJST(p.start_time)} 〜 ${formatDateTimeJST(p.end_time)}`
+                    ? `${formatDateTimeJST(p.start_time)}`
                     : `${formatDateTimeJST(p.start_time)}`;
                   const location = p.building.building_name;
 
@@ -137,7 +136,7 @@ const EventList: React.FC = () => {
                           navigate("/getticket", { state: { projectId: p.project_id } });
                         }}
                       >
-                        {p.requires_ticket ? "整理券を選ぶ" : "詳細を見る"}
+                        {p.requires_ticket ? "get" : "detail"}
                       </button>
                     </NewTicketCard>
                   );

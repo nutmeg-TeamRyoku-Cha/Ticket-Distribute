@@ -1,4 +1,4 @@
-# APIが起動している状態でPowerShellで、
+# APIが起動している状態のPowerShellで
 # sh init.shとかしてください
 
 # 建物

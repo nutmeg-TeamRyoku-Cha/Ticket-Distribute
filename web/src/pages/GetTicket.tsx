@@ -33,8 +33,11 @@ type BuildingRes = {
 const API_BASE = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8080";
 const visitorId = 1;
 
+const NINE_HOURS_MS = 9 * 60 * 60 * 1000;
+const toMinus9h = (iso: string) => new Date(new Date(iso).getTime() - NINE_HOURS_MS);
+
 const formatDateJst = (iso: string) => {
-  const d = new Date(iso);
+  const d = toMinus9h(iso);
   const m = d.getMonth() + 1;
   const day = d.getDate();
   const w = "日月火水木金土"[d.getDay()];
@@ -42,7 +45,7 @@ const formatDateJst = (iso: string) => {
 };
 
 const formatTimeJst = (iso: string) => {
-  const d = new Date(iso);
+  const d = toMinus9h(iso);
   const hh = d.getHours().toString().padStart(2, "0");
   const mm = d.getMinutes().toString().padStart(2, "0");
   return `${hh}:${mm}`;

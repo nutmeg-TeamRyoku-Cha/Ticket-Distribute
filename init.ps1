@@ -74,7 +74,7 @@ $body = @{
     building_id       = 2
     requires_ticket   = $false
     remaining_tickets = 1000
-    start_time        = "2025-10-26T09:00:00Z"
+    start_time        = "2025-10-27T09:00:00Z"
     end_time          = "2025-10-27T16:00:00Z"
 } | ConvertTo-Json
 Invoke-RestMethod -Uri http://localhost:8080/projects -Method Post -Body $body -ContentType "application/json"

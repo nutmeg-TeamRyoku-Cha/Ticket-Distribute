@@ -111,6 +111,22 @@ const EventList: React.FC = () => {
             <Label text="企画一覧" fontSize={20} color="#222" />
           </div>
 
+          {/* タブ：要整理券 / 自由参加 */}
+          <div className="EventList-tabrow" style={{ margin: 20, textAlign: "left" }}>
+            <Button
+              label="要整理券"
+              variant="chip"
+              className={`toggle-chip ${tab === "requires" ? "is-active" : ""}`}
+              onClick={() => setTab("requires")}
+            />
+            <Button
+              label="自由参加"
+              variant="chip"
+              className={`toggle-chip ${tab === "free" ? "is-active" : ""}`}
+              onClick={() => setTab("free")}
+            />
+          </div>
+
           {loading && <div className="EventList-status">読み込み中...</div>}
           {errorMessage && <div className="EventList-status error">読み込み失敗: {errorMessage}</div>}
           {!loading && !errorMessage && items.length === 0 && (
@@ -121,21 +137,6 @@ const EventList: React.FC = () => {
             <div key={dateKey} className="EventList-date-group">
               <div style={{ marginBottom: 12 }}>
                 <Label text={formatDate(dateKey)} fontSize={20} color="#000" />
-              </div>
-              {/* タブ：要整理券 / 自由参加 */}
-              <div className="EventList-tabrow" style={{ margin: 10, textAlign: "left" }}>
-                <Button
-                  label="要整理券"
-                  variant="chip"
-                  className={`toggle-chip ${tab === "requires" ? "is-active" : ""}`}
-                  onClick={() => setTab("requires")}
-                />
-                <Button
-                  label="自由参加"
-                  variant="chip"
-                  className={`toggle-chip ${tab === "free" ? "is-active" : ""}`}
-                  onClick={() => setTab("free")}
-                />
               </div>
 
               <div className="EventList-list-wrapper">

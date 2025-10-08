@@ -8,7 +8,7 @@ import Header from "../components/Header"
 
 import "./Account.css"
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8080";
+const API_BASE = import.meta.env.VITE_API_BASE_URL ?? "/api";
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -47,7 +47,7 @@ const LoginPage: React.FC = () => {
         const text = await res.text();
         throw new Error(text || `HTTP ${res.status}`);
       }
-      const data: { visitor_id: number } = await res.json();
+      //const data: { visitor_id: number } = await res.json();
       setMessage(`登録しました`);
       setRegNickname("");
       setRegBirthDate("");

@@ -4,7 +4,8 @@ import "./Button.css";
 export type ButtonVariant =
   | "primary"
   | "registration"
-  | "login";
+  | "login"
+  | "chip" ;
 
 export type ButtonProps = {
   label: React.ReactNode;
@@ -13,6 +14,7 @@ export type ButtonProps = {
   variant?: ButtonVariant;
   icon?: string | React.ReactNode;
   className?: string;
+  disabled?: boolean;
 };
 
 const Button: React.FC<ButtonProps> = ({

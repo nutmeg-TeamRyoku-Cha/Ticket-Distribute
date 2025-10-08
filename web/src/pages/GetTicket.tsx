@@ -30,7 +30,7 @@ type BuildingRes = {
   longitude?: string;
 };
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8080";
+const API_BASE = import.meta.env.VITE_API_BASE_URL ?? "/api";
 const visitorId = 1;
 
 const NINE_HOURS_MS = 9 * 60 * 60 * 1000;

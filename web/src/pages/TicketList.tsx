@@ -14,7 +14,9 @@ interface GroupedTickets { [date: string]: Ticket[]; }
 
 // --- ヘルパー関数 ---
 const formatDate = (dateString: string | null): string => { if (!dateString) return "日付未定"; const date = new Date(dateString); const month = date.getMonth() + 1; const day = date.getDate(); const dayOfWeek = ["日", "月", "火", "水", "木", "金", "土"][date.getDay()]; return `${month}/${day}(${dayOfWeek})`; };
-const formatTime = (isoString: string | null): string => { if (!isoString) return ""; const date = new Date(isoString); const hours = date.getUTCHours().toString().padStart(2, "0"); const minutes = date.getUTCMinutes().toString().padStart(2, "0"); return `${hours}:${minutes}`; };
+const formatTime = (isoString?: string | null): string => { if (!isoString) return ""; const date = new Date(isoString); const hours = date.getUTCHours().toString().padStart(2, "0"); const minutes = date.getUTCMinutes().toString().padStart(2, "0"); return `${hours}:${minutes}`; };
+
+const API_BASE = import.meta.env.VITE_API_BASE_URL ?? "/api";
 
 const TicketList: React.FC = () => {
   const [visitor, setVisitor] = useState<Visitor | null>(null);
@@ -24,7 +26,7 @@ const TicketList: React.FC = () => {
 
   const fetchAndProcessTickets = async () => {
     try {
-      const res = await fetch(`http://localhost:8080/tickets/visitor/${visitorId}`);
+      const res = await fetch(`${API_BASE}/tickets/visitor/${visitorId}`);
       if (!res.ok) throw new Error(`[${res.status}] 整理券情報の取得に失敗`);
       const data: Ticket[] = await res.json();
       const processedTickets = data.reduce((acc: GroupedTickets, ticket) => {
@@ -43,7 +45,7 @@ const TicketList: React.FC = () => {
   useEffect(() => {
     const fetchVisitor = async () => {
       try {
-        const res = await fetch(`http://localhost:8080/visitors/${visitorId}`);
+        const res = await fetch(`${API_BASE}/visitors/${visitorId}`);
         if (!res.ok) throw new Error(`[${res.status}] 来場者情報の取得に失敗`);
         const data: Visitor = await res.json();
         setVisitor(data);
@@ -57,7 +59,7 @@ const TicketList: React.FC = () => {
 
   const handleUseTicket = async (ticketId: number) => {
     try {
-      const res = await fetch(`http://localhost:8080/tickets/${ticketId}/status`, {
+      const res = await fetch(`${API_BASE}/tickets/${ticketId}/status`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: 'used' }),

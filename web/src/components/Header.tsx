@@ -11,7 +11,7 @@ const Header: React.FC<HeaderProps> = ({ title = '整理券一覧' }) => {
   return (
     <header className="header">
       <div className="header-content">
-        <Label text={title} variant="header" fontSize={18}/>
+        <Label text={title} fontSize={18}/>
         <LogoIcon icon="/images/logo-icon.png" alt="45thロゴ" variant="logo" />
       </div>
       <div className="header-line" />

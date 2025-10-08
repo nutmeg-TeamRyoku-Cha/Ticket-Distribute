@@ -24,8 +24,8 @@ const Footer = () => {
         onClick={() => go('/event')}
         onKeyDown={(e) => handleKey(e, '/event')}
       >
-        <LogoIcon icon="/images/event-icon.png" alt="イベントアイコン" variant="footer" />
-        <Label text="EVENT" variant="footer" color='#875318'/>
+        <LogoIcon icon="/images/event-icon.png" alt="イベントアイコン" variant="event" />
+        <Label text="EVENT" color="#875318" />
       </div>
       <div
         className={`footer-item ${pathname === '/ticket' ? 'is-active' : ''}`}
@@ -35,8 +35,8 @@ const Footer = () => {
         onClick={() => go('/ticket')}
         onKeyDown={(e) => handleKey(e, '/ticket')}
       >
-        <LogoIcon icon="/images/ticket-icon.png" alt="チケットアイコン" variant="footer" />
-        <Label text="TICKET" variant="footer" color='#875318'/>
+        <LogoIcon icon="/images/ticket-icon.png" alt="チケットアイコン" variant="event" />
+        <Label text="TICKET" color='#875318'/>
       </div>
       <div
         className={`footer-item ${pathname === '/setting' ? 'is-active' : ''}`}
@@ -46,8 +46,8 @@ const Footer = () => {
         onClick={() => go('/setting')}
         onKeyDown={(e) => handleKey(e, '/setting')}
       >
-        <LogoIcon icon="/images/setting-icon.png" alt="設定アイコン" variant="footer" />
-        <Label text="SETTING" variant="footer" color='#875318'/>
+        <LogoIcon icon="/images/setting-icon.png" alt="設定アイコン" variant="event" />
+        <Label text="SETTING" color='#875318'/>
       </div>
     </footer>
   );

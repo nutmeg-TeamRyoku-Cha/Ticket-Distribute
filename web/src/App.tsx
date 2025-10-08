@@ -1,5 +1,4 @@
 import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
-import { useState } from "react";
 
 //Pageのみ配置
 import LoginPage from "./pages/Account";
@@ -7,9 +6,7 @@ import TicketList from "./pages/TicketList";
 import GetTicket from "./pages/GetTicket";
 import EventList from "./pages/EventList";
 
-function App() {
-  const [text, setText] = useState("");
-  
+function App() {  
   return (
     <Router>
       <Routes>

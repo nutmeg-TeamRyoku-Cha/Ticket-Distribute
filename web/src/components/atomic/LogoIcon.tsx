@@ -4,12 +4,12 @@ import './LogoIcon.css';
 type IconProps = {
   icon: string;
   alt?: string;
-  onClick: () => void;
+  onClick?: () => void;
   variant?: 'logo' | 'ticket'| 'event'| 'setting'| 'default';
   type?: 'button' | 'submit' | 'reset';
 };
 
-const Icon: React.FC<IconProps> = ({ icon, alt = '', onClick, variant = 'default', type = 'button' }) => {
+const Icon: React.FC<IconProps> = ({ icon, alt = '', onClick = () => {}, variant = 'default', type = 'button' }) => {
   const getClassName = () => {
     switch (variant) {
       case 'logo':

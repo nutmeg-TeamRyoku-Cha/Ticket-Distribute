@@ -7,7 +7,11 @@ services:
       - api
     ports:
       - "80:80"
+      - "443:443"
     restart: always
+    volumes:
+      - ./certs/fullchain.pem:/etc/ssl/certs/fullchain.pem:ro
+      - ./certs/privkey.pem:/etc/ssl/private/privkey.pem:ro
   api:
     build:
       context: ./api

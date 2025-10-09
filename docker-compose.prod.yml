@@ -47,3 +47,7 @@ services:
       - --skip-character-set-client-handshake
 volumes:
   db_data:
+
+networks:
+  appnet:
+    driver: bridge
